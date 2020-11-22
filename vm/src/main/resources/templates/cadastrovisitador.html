@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name="description" content="">
+<title>Insert title here</title>
+
+<link href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" rel="stylesheet">
+<link href="/css/jqvmap.css" rel="stylesheet">
+<link href="/css/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+<!-- Fullcalendar-->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.css" rel="stylesheet">
+<!-- Materialize-->
+<link href="/css/admin-materialize.min.css" rel="stylesheet">
+<!-- Material Icons-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	
+	
+</head>
+<body>
+
+	<main>
+		<div class="container">
+			<div th:insert="/index :: header"></div>
+			<div class="col s12">
+				
+				<div class="card grey lighten-4" style="padding: 20px 20px 20px 20px">
+					<div class="card-metric-title center" style="font-weight: bold; font-size: 18px;">Cadastro Visitador</div>
+					<hr class="rounded"></hr>
+					<br/>
+
+					<form class="col s12" action="salvarvisitador" method="post" th:object="${visitadorobj}" onsubmit="return validarCampos() ? true : false">
+							<div class="row">
+								
+									<div class="input-field col s3">
+									<span>Data cadastro: </span> <span th:text="${#dates.format(visitadorobj.data_cadastro, 'dd/MM/yyyy')}"></span>
+									
+									</div>
+									<div class="input-field col s3">
+									<span>Última alteração: </span> <span th:text="${#dates.format(visitadorobj.data_alteracao, 'dd/MM/yyyy')}"></span>
+									</div>
+								
+								</div>
+							<hr class="rounded"></hr>
+							<br/>
+							
+							<div class="row">
+								<input  type="hidden" name="idvisitador" class="validade" th:field="*{idvisitador}" readonly="readonly">
+								<div class="input-field col s8">
+									<input id="nome" type="text" name="nome" class="validate" th:field="*{nome}">
+									<label for="nome">Nome</label>
+								</div>
+								<div class="input-field col s4">
+									 <input type="text" class="datepicker" name="data_nascimento" id="data_nascimento" th:field="*{data_nascimento}" >
+									 <label for="data_nascimento">Data nascimeno</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-field col s4">
+									<input id="telefone1" type="text" name="telefone1"
+										class="telefone1" th:field="*{telefone1}"> <label for="telefone1">Celular</label>
+								</div>
+								<div class="input-field col s4">
+									<input id="telefone2" type="text" name="telefone2"
+										class="validate" th:field="*{telefone2}"> <label for="telefone2">Casa</label>
+								</div>
+								<div class="input-field col s4">
+									<input id="telefone3" type="text" name="telefone3"
+										class="validate" th:field="*{telefone3}"> <label for="telefone3">Comercial</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-field col s6">
+									<input id="cpf" type="text" name="cpf"
+										class="validate" th:field="*{cpf}"> <label for="cpf">CPF</label>
+								</div>
+								<div class="input-field col s6">
+									<input id="rg" type="text" name="rg"
+										class="validate" th:field="*{rg}"> <label for="rg">RG</label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="input-field col s12">
+									<input id="email" type="email" name="email" class="validate" th:field="*{email}">
+									<label for="email">Email</label>
+								</div>
+							</div>								
+						
+							
+							<div class="row">
+								<div class="col s12">
+
+									<button class="btn waves-effect waves-light" type="submit" name="action" >
+										Salvar <i class="material-icons right">save</i>
+										
+									</button>
+									<a href="/cadastrovisitador">
+										<button class="btn waves-effect waves-light blue"
+											type="button" name="novo">
+											Novo <i class="material-icons right">add_circle</i>
+										</button>
+									</a>
+									<button class="btn waves-effect waves-light red" type="reset"
+										name="action">
+										Cancelar <i class="material-icons right">clear</i>
+									</button>
+
+									<a href="/listarvisitadores">
+										<button class="btn waves-effect waves-light grey"
+											type="button" name="listar">
+											Listar Visitadores <i class="material-icons right">list</i>
+										</button>
+									</a>
+									
+								</div>
+							</div>
+						</form>
+					</div>
+
+				</div>
+			</div>
+<div th:insert="/index :: footer"></div>
+		
+		<input type="hidden" id="msgSucesso" th:value="${msgSucesso}">
+		<input type="hidden" id="msgErro" th:value="${msgErro}">
+		
+	</main>
+
+
+	<!-- Scripts -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="/js/materialize.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.2/moment.min.js"></script>
+
+	<!-- External libraries -->
+
+	<!-- jqvmap -->
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.min.js"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.world.js" charset="utf-8"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.sampledata.js"></script>
+
+	<!-- ChartJS -->
+	<script type="text/javascript" src="/js/Chart.js"></script>
+	<script type="text/javascript" src="/js/Chart.Financial.js"></script>
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
+	<script src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+	<script src="/js/imagesloaded.pkgd.min.js"></script>
+	<script src="/js/masonry.pkgd.min.js"></script>
+
+
+	<!-- Initialization script -->
+	<script src="/js/admin.js"></script>
+	<script src="/js/page-scripts/dashboard.js"></script>
+	<script src="/js/init.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.min.js"></script>
+	
+	<script type="text/javascript">
+		$('#telefone1').mask('(99) 99999-9999');
+		$('#telefone2').mask('(99) 9999-9999');
+		$('#telefone3').mask('(99) 9999-9999');
+		$('#cpf').mask('999.999.999-99');
+		
+	</script>
+	
+	<script type="text/javascript">
+		 	
+	
+		$(document).ready(
+				function() {					
+										
+					$('.datepicker').datepicker(
+							{
+								format : 'dd/mm/yyyy',
+								yearRange: 40,
+								i18n : {
+									months : [ 'Janeiro', 'Fevereiro', 'Março',
+											'Abril', 'Maio', 'Junho', 'Julho',
+											'Agosto', 'Setembro', 'Outubro',
+											'Novembro', 'Dezembro' ],
+									monthsShort : [ 'Jan', 'Fev', 'Mar', 'Abr',
+											'Mai', 'Jun', 'Jul', 'Ago', 'Set',
+											'Out', 'Nov', 'Dez' ],
+									weekdays : [ 'Domingo', 'Segunda', 'Terça',
+											'Quarta', 'Quinta', 'Sexta',
+											'Sabádo' ],
+									weekdaysAbbrev : [ 'Dom', 'Seg', 'Ter',
+											'Qua', 'Qui', 'Sex', 'Sab' ],
+									weekdaysShort: [ 'Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab' ],		
+									today : 'Hoje',
+									clear : 'Limpar',
+									close : 'Pronto',
+									labelMonthNext : 'Próximo mês',
+									labelMonthPrev : 'Mês anterior',
+									labelMonthSelect : 'Selecione um mês',
+									labelYearSelect : 'Selecione um ano',
+									selectMonths : true,
+									cancel : 'Cancelar',
+									clear : 'Limpar'
+									
+									
+								}
+							});
+				});
+	</script>
+	
+	<script type="text/javascript">
+		var mensagemErro = document.getElementById('msgErro').value;
+		var mensagemSucesso = document.getElementById('msgSucesso').value;
+
+		if (mensagemSucesso) {
+			M.toast({
+				html : mensagemSucesso,
+				displayLength : 5000,
+				classes : 'green darken-1 rounded'
+			});
+		}
+		if (mensagemErro) {
+			M.toast({
+				html : mensagemErro,
+				displayLength : 5000,
+				classes : 'red darken-1 rounded'
+			});
+		}
+	</script>
+
+	<script type="text/javascript">
+		
+		function validarCampos() {
+			
+			nome = document.getElementById('nome').value;
+			email = document.getElementById('email').value;
+
+			if (nome === '') {
+
+				M.toast({
+					html : 'Nome não pode ser vazio', classes : 'red darken-1 rounded'
+				});
+
+				return false;
+			}
+			
+			else if (email === '') {
+
+				M.toast({
+					html : 'Email não pode ser vazio', classes : 'red darken-1 rounded'
+				});
+
+				return false;
+			}
+			return true;
+
+		}
+	</script>
+
+
+</body>
+</html>

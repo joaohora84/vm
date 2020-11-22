@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name="description" content="">
+<title>Insert title here</title>
+<link href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" rel="stylesheet">
+<link href="/css/jqvmap.css" rel="stylesheet">
+<link href="/css/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+<!-- Fullcalendar-->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.css" rel="stylesheet">
+<!-- Materialize-->
+<link href="/css/admin-materialize.min.css" rel="stylesheet">
+<!-- Material Icons-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+	<main>
+		<div class="container">
+			<div th:insert="/index :: header"></div>
+			<div class="col s12">
+
+				<div class="card grey lighten-4"  style="padding: 20px 20px 20px 20px">
+				
+				<div class="card-metric-title center" style="font-weight: bold; font-size: 18px;">Perfil Prescritor</div>
+					<hr class="rounded"></hr>
+					<br/>
+				
+				<div class="row  blue-text text-darknen-2">					
+					<h5 id="prescritor" th:text="*{prescritorobj.nome}" style="padding-left: 10px"></h5>
+					<div class="divider"></div>
+					<br/>
+				</div>
+
+					<form th:action="@{/salvarperfil/{idpres}(idpres=${prescritorobj.idprescritor})}" method="post" th:object="${perfilobj}">
+						
+						<h6 style="font-weight: bold;">Perfil</h6>						
+						<div class="divider"></div>
+						<br/>
+					
+						<div class="row">
+						
+							<input id="idperfilprescritor" type="hidden" name="idperfilprescritor" class="validate"
+									th:field="*{idperfilprescritor}"> 
+							
+							<div class="input-field col s4">
+								<select id="melhorperiodo" name="melhorperiodo"
+									th:field="*{melhorperiodo}">
+									<option value="" disabled selected>Selecione</option>
+									<option value="MANHA">Manhã</option>
+									<option value="TARDE">Tarde</option>
+									<option value="NOITE">Noite</option>
+								</select> <label>Melhor período</label>
+							</div>
+							<div class="input-field col s4">
+								<select id="tipovisita" name="tipovisita"
+									th:field="*{tipovisita}">
+									<option value="" disabled selected>Selecione</option>
+									<option value="RAPIDA">Rápida</option>
+									<option value="DETALHADA">Detalhada</option>
+								</select> <label>Tipo visita</label>
+							</div>
+
+
+						</div>
+						<div class="row">
+							<div class="input-field col s4">
+								<input id="hobby" type="text" name="hobby" class="validate"
+									th:field="*{hobby}"> <label for="hobby">Hobby</label>
+							</div>
+							<div class="input-field col s4">
+								<input id="timefutebol" type="text" name="timefutebol"
+									class="validate" th:field="*{timefutebol}"> <label
+									for="timefutebol">Time Futebol</label>
+							</div>
+							<div class="input-field col s4">
+								<input id="assuntopredileto" type="text" name="assuntopredileto"
+									class="validate" th:field="*{assuntopredileto}"> <label
+									for="assuntopredileto">Assunto Predileto</label>
+							</div>
+						</div>
+					
+						<h6 style="font-weight: bold;">Características profissionais</h6>						
+						<div class="divider"></div>
+						<br/>
+						<div class="row">
+							<p>
+								<label> <input type="checkbox" name="estudioso" th:checked="*{estudioso}" />
+								 <span>Estudioso</span>
+								</label>
+							</p>
+							<p>
+								<label> <input type="checkbox" name="formadoropniao" th:checked="*{formadoropniao}" />
+									<span>Formador de opnião</span>
+								</label>
+							</p>
+						</div>
+						<div class="row">
+							<div class="input-field col s4">
+								<select id="nivelsocioeconomicopacientes"
+									name="nivelsocioeconomicopacientes"
+									th:field="*{nivelsocioeconomicopacientes}">
+									<option value="" disabled selected>Selecione</option>
+									<option value="AUTO">Auto</option>
+									<option value="MEDIO">Médio</option>
+									<option value="BAIXO">Baixo</option>
+								</select> <label>Nível socioeconômico pacientes</label>
+							</div>
+							<div class="input-field col s4">
+								<select id="prescreveprodutosindustrializados"
+									name="prescreveprodutosindustrializados"
+									th:field="*{prescreveprodutosindustrializados}">
+									<option value="" disabled selected>Selecione</option>
+									<option value="SIM">Sim</option>
+									<option value="NAO">Não</option>
+									<option value="RARAMENTE">Raramente</option>
+								</select> <label>Prescreve produtos industrializados</label>
+							</div>
+
+						</div>
+						<div class="row">
+							<div class="input-field col s4">
+								<select id="prescreveprodutosmanipulados"
+									name="prescreveprodutosmanipulados"
+									th:field="*{prescreveprodutosmanipulados}">
+									<option value="" disabled selected>Selecione</option>
+									<option value="SIM">Sim</option>
+									<option value="NAO">Não</option>
+									<option value="RARAMENTE">Raramente</option>
+								</select> <label>Prescreve produtos manipulados</label>
+							</div>
+							<div class="input-field col s4">
+								<select id="perfilprescricoes" name="perfilprescricoes"
+									th:field="*{perfilprescricoes}">
+									<option value="" disabled selected>Selecione</option>
+									<option value="1 ATIVO">1 Ativo</option>
+									<option value="2 ATIVOS">2 Ativos</option>
+									<option value="3 ATIVOS">3 Ativos</option>
+									<option value="OU MAIS">Ou mais</option>
+								</select> <label>Perfil precrições</label>
+							</div>
+						</div>
+						<h6 style="font-weight: bold;">Perfil psicológico</h6>						
+						<div class="divider"></div>
+						<br/>
+						<div class="row">
+							<div class="col s6">
+								<p>
+									<label> <input type="checkbox" name="obstinado" th:checked="*{obstinado}"  /> <span>Obstinado</span>
+									</label>
+								</p>
+								<p>
+									<label> <input type="checkbox" name="metodico" th:checked="*{metodico}" /> <span>Metódico</span>
+									</label>
+								</p>
+								<p>
+									<label> <input type="checkbox" name="sociavel" th:checked="*{sociavel}" /> <span>Sociável</span>
+									</label>
+								</p>
+								<p>
+									<label> <input type="checkbox" name="estavel" th:checked="*{estavel}" /> <span>Estável</span>
+									</label>
+								</p>
+								<p>
+									<label> <input type="checkbox" name="afavel" th:checked="*{afavel}" /> <span>Afável</span>
+									</label>
+								</p>
+								<p>
+									<label> <input type="checkbox" name="atencioso" th:checked="*{atencioso}" /> <span>Atencioso</span>
+									</label>
+								</p>
+								<p>
+									<label> <input type="checkbox" name="desinteressado" th:checked="*{desinteressado}" />
+										<span>Desinteressado</span>
+									</label>
+								</p>
+								<p>
+									<label> <input type="checkbox" name="questionador" th:checked="*{questionador}" />
+										<span>Questionador</span>
+									</label>
+								</p>
+								<p>
+									<label> <input type="checkbox" name="indeciso" th:checked="*{indeciso}" /> <span>Indeciso</span>
+									</label>
+								</p>
+							</div>
+							<div class="col s6">
+								<p>
+									<label> <input type="checkbox" name="irritado" th:checked="*{irritado}" /> <span>Irritado</span>
+									</label>
+								</p>
+								<p>
+									<label> <input type="checkbox" name="calmo" th:checked="*{calmo}" /> <span>Calmo</span>
+									</label>
+								</p>
+								<p>
+									<label> <input type="checkbox" name="desagradavel" th:checked="*{desagradavel}" /><span>Desagradável</span>
+									</label>
+								</p>
+								<p>
+									<label> <input type="checkbox" name="agradavel" th:checked="*{agradavel}" /> <span>Agradavel</span>
+									</label>
+								</p>
+								<p>
+									<label> <input type="checkbox" name="visual" th:checked="*{visual}" /> <span>Visual</span>
+									</label>
+								</p>
+								<p>
+									<label> <input type="checkbox" name="auditivo" th:checked="*{auditivo}" /> <span>Auditivo</span>
+									</label>
+								</p>
+								<p>
+									<label> <input type="checkbox" name="cinestesico" th:checked="*{cinestesico}" /> <span>Cinestésico</span>
+									</label>
+								</p>
+								<p>
+									<label> <input type="checkbox" name="inteligente" th:checked="*{inteligente}" /> <span>Inteligente</span>
+									</label>
+								</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								<textarea id="observacao" class="materialize-textarea"
+									data-length="255" name="observacao" th:field="*{observacao}"></textarea>
+								<label for="observacao">Observação</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col s12">
+
+								<button class="btn waves-effect waves-light" type="submit"
+									name="action">
+									Salvar <i class="material-icons right">save</i>
+
+								</button>
+
+								<button class="btn waves-effect waves-light red" type="reset"
+									name="action">
+									Cancelar <i class="material-icons right">clear</i>
+								</button>
+
+								<a href="/listarprescritores">
+									<button class="btn waves-effect waves-light blue" type="button"
+										name="listar">
+										Listar Prescritores <i class="material-icons right">list</i>
+									</button>
+								</a> <a th:href="@{/editarprescritor/{idpres}(idpres=${prescritorobj.idprescritor})}">
+									<button class="btn waves-effect waves-light blue" type="button"
+										name="perfil">
+										Voltar <i class="material-icons right"></i>
+									</button>
+								</a>
+							</div>
+						</div>
+						</form>
+				</div>
+
+			</div>
+			
+		</div>
+
+		 <div th:insert="/index :: footer"></div>
+			<input type="hidden" id="msgSucesso" th:value="${msgSucesso}">
+			
+	</main>
+
+
+	<!-- Scripts -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="/js/materialize.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.2/moment.min.js"></script>
+
+	<!-- External libraries -->
+
+	<!-- jqvmap -->
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.min.js"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.world.js" charset="utf-8"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.sampledata.js"></script>
+
+	<!-- ChartJS -->
+	<script type="text/javascript" src="/js/Chart.js"></script>
+	<script type="text/javascript" src="/js/Chart.Financial.js"></script>
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
+	<script src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+	<script src="/js/imagesloaded.pkgd.min.js"></script>
+	<script src="/js/masonry.pkgd.min.js"></script>
+
+
+	<!-- Initialization script -->
+	<script src="/js/admin.js"></script>
+	<script src="/js/page-scripts/dashboard.js"></script>
+	<script src="/js/init.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.min.js"></script>
+	
+	<script type="text/javascript">
+		//var mensagemErro = document.getElementById('msgErro').value;
+		var mensagemSucesso = document.getElementById('msgSucesso').value;
+		
+		if (mensagemSucesso) {
+			M.toast({
+				html : mensagemSucesso,
+				displayLength : 5000,
+				classes : 'green darken-1 rounded'
+			});
+		}
+		/*if (mensagemErro) {
+			M.toast({
+				html : mensagemErro,
+				displayLength : 5000,
+				classes : 'red darken-1 rounded'
+			});
+		}*/
+	</script>
+	
+	
+	
+</body>
+</html>

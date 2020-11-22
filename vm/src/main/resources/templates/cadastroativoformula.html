@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name="description" content="">
+<title>Insert title here</title>
+<link href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" rel="stylesheet">
+<link href="/css/jqvmap.css" rel="stylesheet">
+<link href="/css/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+<!-- Fullcalendar-->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.css" rel="stylesheet">
+<!-- Materialize-->
+<link href="/css/admin-materialize.min.css" rel="stylesheet">
+<!-- Material Icons-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+<body>
+
+	<main>
+		<div class="container">
+			<div th:insert="/index :: header"></div>
+			<div class="col s12">
+			
+				<div class="card grey lighten-4" style="padding: 20px 20px 20px 20px;">
+					<div class="right">
+						<a  class="tooltipped" data-position="hight" data-tooltip="Voltar"
+						    th:href="@{/editarformula/{idform}(idform=${formulaobj.idformula})}"><i
+							class="material-icons red-text">reply</i></a>
+					</div>
+				
+					<div class="card-metric-title" style=" font-weight: bold; font-size: 16px;">
+						<span>Fórmula: </span>
+						<span class="teal-text" th:text="*{formulaobj.nome}"></span>
+					</div>
+					
+					<hr class="rounded"></hr>
+					<br/>
+					<div class="row right">
+						<div class="col s12">
+							<a class="waves-effect waves-light btn modal-trigger"
+								href="#modal1">Inserir Ativos na fórmula <i
+								class="material-icons right">add</i></a>
+						</div>
+					</div>
+					<!-- Modal Structure -->
+					<div class="container">
+						<div id="modal1" class="modal grey lighten-4" style="padding: 10px 10px 10px 10px">
+							<div class="modal-content" >
+
+								<div class="search-wrapper col s12">
+									<form th:action="@{/buscarativoformula/{idform}(idform=${formulaobj.idformula})}" method="post">
+										<div class="input-field col s8">
+											<input id="nome" type="search" name="nome"
+												placeholder="Digite o nome do ativo e tecle Enter" required>
+											<label for="nome" class="label-icon"></label> <i
+												class="material-icons">close</i>
+										</div>
+									</form>
+								</div>
+								<br />
+								
+
+								<form th:action="@{/addativoformula/{idform}(idform=${formulaobj.idformula})}" method="post" onsubmit="return validarCamposAtivoFormula()? true : false">
+
+									
+									<table id="table-custom-elements" style="padding: 10px 10px 10px 10px;"
+										class="row-border highlight responsive-table" cellspacing="0"
+										width="100%">
+										<thead>
+											<tr>
+												<th></th>
+												<th></th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each=" a : ${ativos}">
+												<td id="ativos" th:text="${a.idativo}"></td>
+												<td th:text="${a.nome}"></td>
+												<td><a>
+														<p>
+															<label> 
+															<input type="checkbox" value="a.idativo" id="" name="ativoid"
+																th:value="${a.idativo}" /> <span></span>
+															</label>
+														</p>
+												</a></td>
+											</tr>
+										</tbody>
+									</table>
+									<br/>
+									<div class="row">
+
+										<div class="input-field col s4">
+											<input type="number" name="dosagem" id="dosagem" value="0">
+											<label for="Dosagem">Dosagem</label>
+										</div>
+
+										<div class="input-field col s4">
+											<select id="unidade" name="unidade" class="validate">
+												<option value="">Unidade</option>
+												<option th:each="u : ${unidades}" th:value="${u.idunidade}"
+													th:text="${u.unidade}"></option>
+
+											</select>
+										</div>
+										<div class="input-field col s4">
+											<button class="btn waves-effect waves-light" type="submit"
+												name="action">Inserir</button>
+											<button type="reset"
+												class="modal-close btn waves-effect waves-light red lighten-2">Sair
+
+											</button>
+										</div>
+									</div>
+
+								</form>
+
+
+							</div>
+							
+							
+
+						</div>
+						</div>
+					
+				</div>
+				<br/>
+				<div class="card grey lighten-4" style="padding: 20px 20px 20px 20px; font-size: 14px;">
+				
+					<div class="card-metric-title center" style=" font-weight: bold; font-size: 16px;">Composição da Fórmula</div>
+					<hr class="rounded"></hr>
+					<br/>
+					
+					<table id="table-custom-elements"
+									class="row-border responsive-table striped" cellspacing="0"
+									width="100%">
+									<thead>
+										<tr>
+											<th>Código</th>
+											<th>Ativo</th>
+											<th>Dosagem</th>
+											<th>Unidade</th>
+											<th>Ficha técnica</th>
+											<th></th>
+											
+										</tr>
+
+									</thead>
+									<tbody>
+										<tr th:each="at : ${ativosformula}">
+											<td th:text="${at.idativoformula}"></td>
+											<td th:text="${at.ativo.nome}"></td>
+											<td th:text="${at.dosagem}"></td>
+											<td th:text="${at.unidade.unidade}"></td>
+											<td><a class="tooltipped" data-position="top"
+												data-tooltip="Baixar."
+												th:href="@{/downloadfile/{idativ}(idativ=${at.ativo.idativo})}">
+
+													<span th:text="${at.ativo.nomefichatecnica}"></span>
+											</a></td>
+											<td><a class="tooltipped" data-position="top"
+												data-tooltip="Tem certeza que deseja excluir?"
+												th:href="@{/removerativoformula/{afid}(afid=${at.idativoformula})}"
+												title="Excluir"> <i
+													class="material-icons center red-text">delete</i>
+											</a></td>
+										</tr>
+
+									</tbody>
+								</table>
+					</div>
+					
+					
+				</div>
+
+			</div>
+			
+
+				
+
+		
+	
+		 <div th:insert="/index :: footer">
+		</div>
+
+		<input type="hidden" id="msgSucesso" th:value="${msgSucesso}">
+		<input type="hidden" id="msgErro" th:value="${msgErro}">
+		<input type="hidden" id="retorno" th:value="${retorno}">
+
+	</main>
+
+
+	<!-- Scripts -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="/js/materialize.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.2/moment.min.js"></script>
+
+	<!-- External libraries -->
+
+	<!-- jqvmap -->
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.min.js"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.world.js" charset="utf-8"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.sampledata.js"></script>
+
+	<!-- ChartJS -->
+	<script type="text/javascript" src="/js/Chart.js"></script>
+	<script type="text/javascript" src="/js/Chart.Financial.js"></script>
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
+	<script src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+	<script src="/js/imagesloaded.pkgd.min.js"></script>
+	<script src="/js/masonry.pkgd.min.js"></script>
+
+
+	<!-- Initialization script -->
+	<script src="/js/admin.js"></script>
+	<script src="/js/page-scripts/dashboard.js"></script>
+	<script src="/js/init.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.min.js"></script>
+
+	<script type="text/javascript">
+		var mensagemErro = document.getElementById('msgErro').value;
+		var mensagemSucesso = document.getElementById('msgSucesso').value;
+
+		if (mensagemSucesso) {
+			M.toast({
+				html : mensagemSucesso,
+				displayLength : 5000,
+				classes : 'green darken-1 rounded'
+			});
+		}
+		if (mensagemErro) {
+			M.toast({
+				html : mensagemErro,
+				displayLength : 5000,
+				classes : 'red darken-1 rounded'
+			});
+		}
+	</script>
+
+	<script>
+		$(function() {
+			var valorDaDiv = $(".produtosIntTitulo").text();
+			$("#ins").val(valorDaDiv);
+		});
+	</script>
+
+	<script type="text/javascript">
+		function uploadFile() {
+
+			$(document).ready(function() {
+				$('input#input_text, textarea#posologia').characterCounter();
+			});
+	</script>
+
+	<script type="text/javascript">
+
+	function validarCamposAtivoFormula() {
+		
+		unidade = document.getElementById('unidade').value;
+	
+		if (unidade === '') {
+
+			M.toast({
+				html : 'Unidade deve ser preenchida', classes : 'red darken-1 rounded'
+			});
+
+			return false;
+		}
+		
+		return true;
+
+	}
+
+	</script>
+
+
+
+	<script type="text/javascript">
+	
+		var retorno = document.getElementById('retorno').value;
+		
+		if (retorno) {
+			$(document).ready(function() {
+				$('.modal').modal();
+				$('.modal').modal('open');
+			});
+
+		}
+	</script>
+	
+	<script type="text/javascript">
+		document.addEventListener('DOMContentLoaded', function() {
+			var elems = document.querySelectorAll('.tooltipped');
+			var instances = M.Tooltip.init(elems, options);
+		});
+
+		// Or with jQuery
+
+		$(document).ready(function() {
+			$('.tooltipped').tooltip();
+		});
+	</script>
+
+</body>
+</html>

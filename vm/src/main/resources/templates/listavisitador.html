@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name="description" content="">
+<title>Insert title here</title>
+<link href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" rel="stylesheet">
+<link href="/css/jqvmap.css" rel="stylesheet">
+<link href="/css/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+<!-- Fullcalendar-->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.css" rel="stylesheet">
+<!-- Materialize-->
+<link href="/css/admin-materialize.min.css" rel="stylesheet">
+<!-- Material Icons-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+	<main>
+		<div class="container">
+			<div th:insert="/index :: header"></div>
+			<div class="row">
+				<div class="col s12">
+
+					
+					<div class="card grey lighten-4" style="padding: 20px 20px 20px 20px">
+					
+					<div class="right">
+							<a class="tooltipped" data-position="hight"
+								data-tooltip="Cadastrar Fórmula" href="/cadastrovisitador"><i
+								class="small material-icons green-text">add_box</i></a>
+						</div>
+						<div class="row">
+						<div class="search-wrapper">
+							<form action="pesquisarvisitador" method="post">
+								<div class="input-field col s6">
+									<input id="nome" type="search" name="nome"
+										placeholder="Enter para bucar por nome" required> <label
+										for="nome" class="label-icon"></label> <i
+										class="material-icons">close</i>
+								</div>
+							</form>
+						</div>
+						</div>
+					
+					</div>
+					
+					
+
+					<div class="card grey lighten-4" style="padding: 20px 20px 20px 20px">
+					
+					
+						
+						<table id="table-custom-elements" class="row-border responsive-table striped" cellspacing="0" width="100%">
+
+							
+							<thead>
+								<tr>
+									<th>Código</th>
+									<th>Nome</th>
+									<th>Email</th>
+									<th>Celular</th>
+									<th>Data nascimento</th>
+									<th>Opções</th>
+
+								</tr>
+
+							</thead>
+							<tbody>
+
+								<tr th:each=" v : ${visitadores.content}">
+									<td th:text="${v.idvisitador}"></td>
+									<td th:text="${v.nome}"></td>
+									<td th:text="${v.email}"></td>
+									<td th:text="${v.telefone1}"></td>
+									<td th:text="${#dates.format(v.data_nascimento, 'dd-MM-yyyy')}"></td>
+									<td><a
+										th:href="@{/editarvisitador/{idv}(idv=${v.idvisitador})}" title="Editar">
+											<i class="material-icons center green-text">edit</i>
+									</a> <a class="tooltipped" data-position="top" data-tooltip="Excluir"
+										onclick="return window.confirm('Tem certeza que deseja excluir este registro?') "
+										th:href="@{/removervisitador/{idv}(idv=${v.idvisitador})}" title="Excluir">
+											<i class="material-icons center red-text">delete</i>
+									</a></td>
+								</tr>
+
+							</tbody>
+						</table>
+
+						<!-- PAGINAÇÃO -->
+						<div class="row center" style="margin-top: 30px;">
+							<span th:if="${visitadores.hasPrevious()}"> <a
+								th:href="@{/visitadorpage(page=${visitadores.number-1}, size=${visitadores.size})}"><i
+									class="small material-icons">chevron_left</i></a>
+							</span>
+
+							<th:ul class="pagination blue-text" th:each="i: ${#numbers.sequence(0, visitadores.totalPages -1)}">
+
+								<li class="waves-effect">
+									<a	th:href="@{/visitadorpage(page=${i}, size=${visitadores.size})}">[[${i} + 1]]</a>
+								</li>
+
+							</th:ul>
+							<span th:if="${visitadores.hasNext()}"> <a
+								th:href="@{/visitadorpage(page=${visitadores.number+1}, size=${visitadores.size})}"><i
+									class="small material-icons">chevron_right</i></a>
+							</span>
+
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+
+			
+		</div>
+		<div th:insert="/index :: footer"></div>
+		<input type="hidden" id="msgExclusao" th:value="${msgExclusao}">
+		
+	</main>
+
+	<!-- Scripts -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="/js/materialize.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.2/moment.min.js"></script>
+
+	<!-- External libraries -->
+
+	<!-- jqvmap -->
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.min.js"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.world.js" charset="utf-8"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.sampledata.js"></script>
+
+	<!-- ChartJS -->
+	<script type="text/javascript" src="/js/Chart.js"></script>
+	<script type="text/javascript" src="/js/Chart.Financial.js"></script>
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
+	<script src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+	<script src="/js/imagesloaded.pkgd.min.js"></script>
+	<script src="/js/masonry.pkgd.min.js"></script>
+
+
+	<!-- Initialization script -->
+	<script src="/js/admin.js"></script>
+	<script src="/js/page-scripts/dashboard.js"></script>
+	<script src="/js/init.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.min.js"></script>
+	
+	<script type="text/javascript">
+	document.addEventListener('DOMContentLoaded', function() {
+	    var elems = document.querySelectorAll('.tooltipped');
+	    var instances = M.Tooltip.init(elems, options);
+	  });
+
+	  // Or with jQuery
+
+	  $(document).ready(function(){
+	    $('.tooltipped').tooltip();
+	  });
+	</script>
+
+	<script type="text/javascript">
+		var msgExclusao = document.getElementById('msgExclusao').value;
+
+		if (msgExclusao) {
+			M.toast({
+				html : msgExclusao,
+				displayLength : 5000,
+				classes : 'green darken-1 rounded'
+			});
+
+		}
+	</script>
+</body>
+</html>

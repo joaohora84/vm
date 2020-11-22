@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name="description" content="">
+<title>Agenda</title>
+
+<link href="/fullcalendar/packages/core/main.css" rel="stylesheet" />
+<link href="/fullcalendar/packages/daygrid/main.css" rel="stylesheet" />
+<link href="/fullcalendar/packages/timegrid/main.css" rel="stylesheet" />
+<link href="/fullcalendar/packages/list/main.css" rel="stylesheet" />
+
+<link href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" rel="stylesheet">
+<link href="/css/jqvmap.css" rel="stylesheet">
+<link href="/css/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+
+<!-- Materialize-->
+<link href="/css/admin-materialize.min.css" rel="stylesheet">
+<!-- Material Icons-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+</head>
+<body>
+
+	<main>
+		<div class="container">
+			<div th:insert="/index :: header"></div>
+			<div class="col s12">
+            
+				<div class="row">
+				
+					<div class="col s12">
+
+						<div class="card grey lighten-4" style="padding: 20px 20px 20px 20px">
+						
+							<div class="card-metric-title center"
+								style="font-weight: bold; font-size: 18px;">Agenda de visitas</div>
+							<hr class="rounded"></hr>
+							<br />
+							<div id="calendar-container">
+								<div id="calendar"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<div th:insert="/index :: footer"></div>
+
+	</main>
+
+
+	<script src="/fullcalendar/packages/core/main.js"></script>
+	<script src="/fullcalendar/packages/daygrid/main.js"></script>
+	<script src="/fullcalendar/packages/timegrid/main.js"></script>
+	<script src="/fullcalendar/packages/list/main.js"></script>
+	<script src="/fullcalendar/packages/core/locales/pt-br.js"></script>
+	
+	<!-- Scripts -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="/js/materialize.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.2/moment.min.js"></script>
+
+	<!-- External libraries -->
+
+	<!-- jqvmap -->
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.min.js"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.world.js" charset="utf-8"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.sampledata.js"></script>
+
+	<!-- ChartJS -->
+	<script type="text/javascript" src="/js/Chart.js"></script>
+	<script type="text/javascript" src="/js/Chart.Financial.js"></script>
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+	<script src="/js/imagesloaded.pkgd.min.js"></script>
+	<script src="/js/masonry.pkgd.min.js"></script>
+
+
+	<!-- Initialization script -->
+	<script src="/js/admin.js"></script>
+	<script src="/js/page-scripts/dashboard.js"></script>
+	<script src="/js/init.js"></script>
+
+
+ <script type="text/javascript">
+		document.addEventListener('DOMContentLoaded', function() {
+			var calendarEl = document.getElementById('calendar');
+
+			var calendar = new FullCalendar.Calendar(calendarEl, {
+
+				header : {
+
+					center : 'dayGridMonth,dayGridWeek,listWeek,dayGridDay',
+
+				},
+
+				eventLimit : true,
+				views : {
+					timeGrid : {
+						eventLimit : 2
+					}
+				},
+				editable: true,
+				droppable: true,
+				locale : 'pt-br',
+				events : '/api/event/all',
+				plugins : [ 'dayGrid', 'timeGrid', 'list', 'interactionPlugin' ],
+
+			});
+
+			calendar.render();
+
+		});
+	</script>
+</body>
+</html>

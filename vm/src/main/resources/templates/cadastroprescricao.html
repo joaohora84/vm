@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name="description" content="">
+<title>Insert title here</title>
+<link href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" rel="stylesheet">
+<link href="/css/jqvmap.css" rel="stylesheet">
+<link href="/css/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+<!-- Fullcalendar-->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.css" rel="stylesheet">
+<!-- Materialize-->
+<link href="/css/admin-materialize.min.css" rel="stylesheet">
+<!-- Material Icons-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+<body>
+
+	<main>
+		
+		<div class="container">
+		<div th:insert="/index :: header"></div>
+			<div class="col s12">
+			
+				<div class="card grey lighten-4" style="padding: 20px 20px 20px 20px">
+				<div class="card-metric-title center" style="font-weight: bold; font-size: 18px;">Cadastro Prescrição</div>
+					<hr class="rounded"></hr>
+					<br/>
+				
+				
+
+					<form class="col s12" action="salvarprescricao" method="post" th:object="${prescricaoobj}" enctype="multipart/form-data" onsubmit="return validarCampos() ? true : false">
+							
+								<div class="row">
+								
+									<div class="input-field col s3">
+									<span>Data cadastro: </span> <span th:text="${#dates.format(prescricaoobj.data_cadastro, 'dd/MM/yyyy')}"></span>
+									
+									</div>
+									<div class="input-field col s3">
+									<span>Última alteração: </span> <span th:text="${#dates.format(prescricaoobj.data_alteracao, 'dd/MM/yyyy')}"></span>
+									</div>
+								
+								</div>
+							<hr class="rounded"></hr>
+							<br/>
+						
+							
+								<input type="hidden" name="idprescricao" class="validade"
+									th:field="*{idprescricao}" readonly="readonly">
+							
+						
+						<div class="row">
+							<div class="input-field col s6">
+									<select id="prescritor" name="prescritor" th:field="*{prescritor}">
+										<option value="">Selecione o prescritor</option>
+										<option th:each="p : ${prescritores}" th:value="${p.idprescritor}" th:text="${p.nome}"></option>
+										<label>Selecione o Prescritor</label>							
+
+									</select>
+							</div>
+							<div class="input-field col s6">
+								<input id="nome_paciente" type="text" name="nome_paciente" class="validate"
+									th:field="*{nome_paciente}"> <label for="nome">Paciente</label>
+							</div>
+							
+							
+						</div>
+						
+						<div class="row">
+							<div class="input-field col s3">
+								<input id="telefone_paciente" type="text" name="telefone_paciente"
+									th:field="*{telefone_paciente}" class="validate"> <label
+									for="telefone_paciente">Telefone paciente</label>
+							</div>
+							<div class="input-field col s9">
+								<input id="endereco_paciente" type="text" name="endereco_paciente"
+									th:field="*{endereco_paciente}" class="validate"> <label
+									for="endereco_paciente">Endereço paciente</label>
+							</div>
+
+						</div>
+						
+
+						<div class="row">
+								<div class="col s12">
+
+									<button class="btn waves-effect waves-light" type="submit" name="action" >
+										Salvar <i class="material-icons right">save</i>
+										
+									</button>
+									<a href="/cadastroprescricao">
+										<button class="btn waves-effect waves-light blue"
+											type="button" name="novo">
+											Novo <i class="material-icons right">add_circle</i>
+										</button>
+									</a>
+
+								<button class="btn waves-effect waves-light red" type="reset"
+									name="action">
+									Cancelar <i class="material-icons right">clear</i>
+
+								</button>
+								<a href="/listarprescricoes">
+									<button class="btn waves-effect waves-light grey" type="button"
+										name="listar">
+										Listar prescrições <i class="material-icons right">list</i>
+									</button>
+								</a>
+								
+
+							</div>
+							</div>
+						</form>
+
+					
+				</div>
+				
+				<div class="card grey lighten-4" style="padding: 20px 20px 20px 20px">
+				
+					<div class="card-metric-title center" style="font-weight: bold; font-size: 16px;">
+						<span>Fórmulas</span>
+						
+					</div>
+					<div class="right">
+							<a class="waves-effect waves-light btn modal-trigger"
+								href="#modal1">Inserir fórmula <i
+								class="material-icons right">add</i></a>
+					</div>
+					<!-- Modal Structure -->
+						<div id="modal1" class="modal grey lighten-3" style="padding: 10px 10px 10px 10px">
+							<div class="modal-content">
+
+								<div class="search-wrapper col s12">
+									<form th:action="@{/buscarformula/{idpres}(idpres=${prescricaoobj.idprescricao})}" method="post">
+										<div class="input-field col s8">
+											<input id="nome" type="search" name="nome"
+												placeholder="Digite o nome da fórmula e tecle Enter" required>
+											<label for="nome" class="label-icon"></label> <i
+												class="material-icons">close</i>
+										</div>
+									</form>
+								</div>
+								<br />
+
+
+								<form th:action="@{/addformulaprescricao/{idpres}(idpres=${prescricaoobj.idprescricao})}"
+								 method="post" onsubmit="return validarCamposInsumo()? true : false">
+
+
+									<table id="table-custom-elements"
+										class="row-border highlight responsive-table" cellspacing="0"
+										width="100%">
+										<thead>
+											<tr>
+												<th></th>
+												<th></th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each=" f : ${formulas}">
+												<td id="formulas" th:text="${f.idformula}"></td>
+												<td th:text="${f.nome}"></td>
+												<td><a>
+														<p>
+															<label> 
+															<input type="checkbox" id="idformula" name="idformula" th:value="${f.idformula}" /> <span></span>
+															</label>
+														</p>
+												</a></td>
+											</tr>
+										</tbody>
+									</table>
+
+							<div class="right">
+
+								<div class="input-field col s4">
+									<button class="btn waves-effect waves-light" type="submit"
+										name="action">Inserir</button>
+									<button type="reset"
+										class="modal-close btn waves-effect waves-light red lighten-2">Sair
+
+									</button>
+								</div>
+
+							</div>
+
+						</form>
+
+
+							</div>
+
+						</div>
+						
+						<hr class="rounded"></hr>
+						<br/>
+						
+						<table id="table-custom-elements"
+									class="row-border responsive-table striped" cellspacing="0"
+									width="100%">
+									<thead>
+										<tr>
+											
+											<th>Fórmula</th>
+											<th>Valor</th>
+											<th></th>
+											
+										</tr>
+
+									</thead>
+									<tbody>
+										<tr th:each="fp : ${formulasprescricao}">
+											<td th:hidden="${fp.idformulaprescricao}"></td>
+											<td th:text="${fp.formula.nome}"></td>
+											<td th:text="${'R$ ' + fp.formula.valor}"></td>
+											<td><a class="tooltipped" data-position="top"
+												data-tooltip="Excluir?"
+												onclick="return window.comfirm('Tem certeza que deseja excluir este registro?')"
+												th:href="@{/removerformulaprescricao/{idfp}(idfp=${fp.idformulaprescricao})}"
+												> <i class="material-icons center red-text">delete</i>
+											</a></td>
+										</tr>
+
+									</tbody>
+								</table>
+				
+				</div>
+
+				</div>
+				
+		
+			<div th:insert="/index :: footer"></div>
+		
+		
+		</div>
+
+		<input type="hidden" id="msgSucesso" th:value="${msgSucesso}">
+		<input type="hidden" id="msgErro" th:value="${msgErro}">
+		<input type="hidden" id="retorno" th:value="${retorno}">
+
+	</main>
+
+
+	<!-- Scripts -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="/js/materialize.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.2/moment.min.js"></script>
+
+	<!-- External libraries -->
+
+	<!-- jqvmap -->
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.min.js"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.world.js" charset="utf-8"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.sampledata.js"></script>
+
+	<!-- ChartJS -->
+	<script type="text/javascript" src="/js/Chart.js"></script>
+	<script type="text/javascript" src="/js/Chart.Financial.js"></script>
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
+	<script src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+	<script src="/js/imagesloaded.pkgd.min.js"></script>
+	<script src="/js/masonry.pkgd.min.js"></script>
+
+
+	<!-- Initialization script -->
+	<script src="/js/admin.js"></script>
+	<script src="/js/page-scripts/dashboard.js"></script>
+	<script src="/js/init.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.min.js"></script>
+	
+	<script type="text/javascript">
+		$('#telefone_paciente').mask('(99) 99999-9999');
+	</script>
+	
+	<script type="text/javascript">
+		function validarCampos() {
+
+			prescritor = document.getElementById('prescritor').value;
+			
+
+			if (prescritor === '') {
+
+				M.toast({
+					html : 'Prescritor não pode ser vazio.',
+					classes : 'red darken-1 rounded'
+				});
+
+				return false;
+			}
+
+			return true;
+
+		}
+	</script>
+
+	
+
+	<script type="text/javascript">
+		var mensagemErro = document.getElementById('msgErro').value;
+		var mensagemSucesso = document.getElementById('msgSucesso').value;
+
+		if (mensagemSucesso) {
+			M.toast({
+				html : mensagemSucesso,
+				displayLength : 5000,
+				classes : 'green darken-1 rounded'
+			});
+		}
+		if (mensagemErro) {
+			M.toast({
+				html : mensagemErro,
+				displayLength : 5000,
+				classes : 'red darken-1 rounded'
+			});
+		}
+	</script>
+
+	<script>
+		$(function() {
+			var valorDaDiv = $(".produtosIntTitulo").text();
+			$("#ins").val(valorDaDiv);
+		});
+	</script>
+
+	<script type="text/javascript">
+		function uploadFile() {
+
+			$(document).ready(function() {
+				$('input#input_text, textarea#posologia').characterCounter();
+			});
+	</script>
+
+
+
+
+	<script type="text/javascript">
+	
+		var retorno = document.getElementById('retorno').value;
+		
+		if (retorno) {
+			$(document).ready(function() {
+				$('.modal').modal();
+				$('.modal').modal('open');
+			});
+
+		}
+	</script>
+
+	<script type="text/javascript">
+		document.addEventListener('DOMContentLoaded', function() {
+			var elems = document.querySelectorAll('.tooltipped');
+			var instances = M.Tooltip.init(elems, options);
+		});
+
+		// Or with jQuery
+
+		$(document).ready(function() {
+			$('.tooltipped').tooltip();
+		});
+	</script>
+	<script>
+		var $range = document.querySelector('#qtd'),
+    	    $value = document.querySelector('#qtdsugerida');
+
+		$range.addEventListener('input', function() {
+		  $value.textContent = this.value;
+		});
+	</script>
+
+
+</body>
+</html>

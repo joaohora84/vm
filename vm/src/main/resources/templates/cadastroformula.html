@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name="description" content="">
+<title>Insert title here</title>
+<link href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" rel="stylesheet">
+<link href="/css/jqvmap.css" rel="stylesheet">
+<link href="/css/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+<!-- Fullcalendar-->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.css" rel="stylesheet">
+<!-- Materialize-->
+<link href="/css/admin-materialize.min.css" rel="stylesheet">
+<!-- Material Icons-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+<body>
+
+	<main>
+		<div class="container">
+			<div th:insert="/index :: header"></div>
+			<div class="col s12">
+				
+				<div class="card grey lighten-4" style="padding: 20px 20px 20px 20px">
+					<div class="card-metric-title center" style="font-weight: bold; font-size: 18px;">Cadastro Fórmula</div>
+					<hr class="rounded"></hr>
+					<br/>
+
+					<form class="col s12" action="salvarformula" method="post"
+						th:object="${formulaobj}"
+						onsubmit="return validarCampos()? true : false">
+						<div class="row">
+								
+									<div class="input-field col s3">
+									<span>Data cadastro: </span> <span th:text="${#dates.format(formulaobj.data_cadastro, 'dd/MM/yyyy')}"></span>
+									
+									</div>
+									<div class="input-field col s3">
+									<span>Última alteração: </span> <span th:text="${#dates.format(formulaobj.data_alteracao, 'dd/MM/yyyy')}"></span>
+									</div>
+								
+						</div>
+							<hr class="rounded"></hr>
+							<br/>
+						
+						<div class="row">
+							
+							<input type="hidden" name="idformula" id="idformula" class="validade" th:field="*{idformula}" readonly="readonly">
+							
+							<div class="input-field col s9">
+								<input id="nome" type="text" name="nome" class="validate"
+									th:field="*{nome}"> <label for="nome">Nome</label>
+							</div>
+							<div class="input-field col s3">
+								<input id="valor" type="text" name="valor" class="validate"
+									th:field="*{valor}"> <label for="nome">Valor</label>
+							</div>
+							
+							
+						</div>
+
+
+						<div class="row">
+						
+						<div class="input-field col s4">
+								<select id="especialidade" name="especialidade" th:field="*{especialidade}">
+									<option value="" disabled="disabled">Selecione</option>
+									<option th:each="e : ${especialidades}" th:value="${e.idespecialidade}" th:text="${e.nome}"></option>								
+								</select>
+								<label>Especialidade</label>
+							</div>
+							<div class="input-field col s4">
+								<input id="codigo_externo" type="text" name="codigo_externo"
+									class="validate" th:field="*{codigo_externo}"> <label
+									for="codigo_externo">Código Externo</label>
+							</div>
+							<div class="input-field col s4">
+								<select id="forma_farmaceutica" name="forma_farmaceutica"
+									th:field="*{forma_farmaceutica}">
+									<option value="">Selecione</option>
+									<option th:each="ff : ${forma_farmaceuticas}"
+										th:value="${ff.idforma_farmaceutica}" th:text="${ff.nome}"></option>
+								</select> <label>Forma farmacêutica</label>
+							</div>
+							
+						</div>
+						<div class="row">
+							
+							<div class="input-field col s12">
+								<textarea id="posologia" class="materialize-textarea"
+									data-length="255" th:field="*{posologia}"></textarea>
+								<label for="posologia">Posologia</label>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col s12">
+
+								<button class="btn waves-effect waves-light" type="submit"
+									name="action">
+									Salvar <i class="material-icons right">save</i>
+
+								</button>
+								<a href="/cadastroformula">
+										<button class="btn waves-effect waves-light blue"
+											type="button" name="novo">
+											Novo <i class="material-icons right">add_circle</i>
+										</button>
+									</a>
+								<button class="btn waves-effect waves-light red" type="reset"
+									name="action">
+									Cancelar <i class="material-icons right">clear</i>
+
+								</button>
+								<a href="/listarformulas">
+									<button class="btn waves-effect waves-light grey" type="button"
+										name="listar">
+										Listar Fórmulas <i class="material-icons right">list</i>
+									</button>
+								</a>
+							
+								<a th:href="${formulaobj.idformula == null} ? @{/cadastroformula} : @{/cadastroativoformula/{idform}(idform=${formulaobj.idformula})}">
+									<button class="btn waves-effect waves-light green" type="button"
+										name="ativos">
+										Ativos <i class="large material-icons right">open_in_new</i>
+									</button>
+								</a>
+
+							</div>
+						</div>
+					</form>
+				</div>
+
+			</div>
+			</div>	
+
+				
+
+		
+	
+		 <div th:insert="/index :: footer">
+		</div>
+
+		<input type="hidden" id="msgSucesso" th:value="${msgSucesso}">
+		<input type="hidden" id="msgErro" th:value="${msgErro}">
+		<input type="hidden" id="retorno" th:value="${retorno}">
+
+	</main>
+
+
+	<!-- Scripts -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="/js/materialize.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.2/moment.min.js"></script>
+
+	<!-- External libraries -->
+
+	<!-- jqvmap -->
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.min.js"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.world.js" charset="utf-8"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.sampledata.js"></script>
+
+	<!-- ChartJS -->
+	<script type="text/javascript" src="/js/Chart.js"></script>
+	<script type="text/javascript" src="/js/Chart.Financial.js"></script>
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
+	<script src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+	<script src="/js/imagesloaded.pkgd.min.js"></script>
+	<script src="/js/masonry.pkgd.min.js"></script>
+
+
+	<!-- Initialization script -->
+	<script src="/js/admin.js"></script>
+	<script src="/js/page-scripts/dashboard.js"></script>
+	<script src="/js/init.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.min.js"></script>
+
+	<script type="text/javascript">
+		function validarCampos() {
+
+			nome = document.getElementById('nome').value;
+			posologia = document.getElementById('posologia').value;
+			
+			
+
+			if (nome === '') {
+
+				M.toast({
+					html : 'Nome da fórmula não pode ser vazio',
+					classes : 'red darken-1 rounded'
+				});
+
+				return false;
+			} else if (posologia === '') {
+
+				M.toast({
+					html : 'Posologia não pode ser vazio',
+					classes : 'red darken-1 rounded'
+				});
+
+				return false;
+			}
+
+			return true;
+
+		}
+	</script>
+
+	<script type="text/javascript">
+		function validarCamposInsumo() {
+			
+			qtd_minima = document.getElementById('qtd_minima').value;
+			qtd_sugerida = document.getElementById('qtd_sugerida').value;
+			qtd_maxima = document.getElementById('qtd_maxima').value;
+			unidade = document.getElementyById('unidade').value
+
+			if (qtd_minima === '') {
+
+				M.toast({
+					html : 'Quantidade mínima deve ser preenchida',
+					classes : 'red darken-1 rounded'
+				});
+
+				return false;
+			} else if (qtd_sugerida === '') {
+
+				M.toast({
+					html : 'Quantidade sugerida deve ser preenchida',
+					classes : 'red darken-1 rounded'
+				});
+
+				return false;
+			} else if (qtd_maxima === '') {
+
+				M.toast({
+					html : 'Quantidade máxima deve ser preenchida',
+					classes : 'red darken-1 rounded'
+				});
+
+				return false;
+			} else if (unidade === '') {
+
+				M.toast({
+					html : 'Unidade deve ser preenchida',
+					classes : 'red darken-1 rounded'
+				});
+
+				return false;
+			}
+
+			return true;
+
+		}
+	</script>
+
+	<script type="text/javascript">
+		var mensagemErro = document.getElementById('msgErro').value;
+		var mensagemSucesso = document.getElementById('msgSucesso').value;
+
+		if (mensagemSucesso) {
+			M.toast({
+				html : mensagemSucesso,
+				displayLength : 5000,
+				classes : 'green darken-1 rounded'
+			});
+		}
+		if (mensagemErro) {
+			M.toast({
+				html : mensagemErro,
+				displayLength : 5000,
+				classes : 'red darken-1 rounded'
+			});
+		}
+	</script>
+
+	<script>
+		$(function() {
+			var valorDaDiv = $(".produtosIntTitulo").text();
+			$("#ins").val(valorDaDiv);
+		});
+	</script>
+
+	<script type="text/javascript">
+		function uploadFile() {
+
+			$(document).ready(function() {
+				$('input#input_text, textarea#posologia').characterCounter();
+			});
+	</script>
+	
+
+
+
+	<script type="text/javascript">
+	
+		var retorno = document.getElementById('retorno').value;
+		
+		if (retorno) {
+			$(document).ready(function() {
+				$('.modal').modal();
+				$('.modal').modal('open');
+			});
+
+		}
+	</script>
+	
+	<script type="text/javascript">
+		document.addEventListener('DOMContentLoaded', function() {
+			var elems = document.querySelectorAll('.tooltipped');
+			var instances = M.Tooltip.init(elems, options);
+		});
+
+		// Or with jQuery
+
+		$(document).ready(function() {
+			$('.tooltipped').tooltip();
+		});
+	</script>
+
+</body>
+</html>
