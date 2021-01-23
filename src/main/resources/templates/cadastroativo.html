@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name="description" content="">
+<title>Magistral Personal</title>
+<link rel="shortcut icon" href="/img/favicon.ico"></link>
+<link
+	href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"
+	rel="stylesheet">
+<link href="/css/jqvmap.css" rel="stylesheet">
+<link href="/css/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+<!-- Fullcalendar-->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.css"
+	rel="stylesheet">
+<!-- Materialize-->
+<link href="/css/admin-materialize.min.css" rel="stylesheet">
+<!-- Material Icons-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+
+	<main>
+		<div class="container">
+			<div th:insert="/index :: header"></div>
+			<div class="col s12">
+
+				<div class="card grey lighten-4"
+					style="padding: 20px 20px 20px 20px">
+					<div class="card-metric-title center"
+						style="font-weight: bold; font-size: 18px;">Cadastro Ativo</div>
+					<br />
+					<div class="divider"></div>
+					<br />
+
+					<form class="col s12" action="salvarativo" method="post"
+						th:object="${ativoobj}" enctype="multipart/form-data"
+						onsubmit="return validarCampos() ? true : false">
+
+
+						<div class="row">
+							<div class="col s12 m6 offset-m6">
+								<div class="right">
+									<button
+										class="waves-effect waves-teal btn-floating blue tooltipped"
+										data-position="botton" data-tooltip="Salvar" name="action"
+										type="submit">
+										<i class="material-icons">save</i>
+									</button>
+
+									<a href="/cadastroativo"
+										class="waves-effect waves-teal btn-floating tooltipped"
+										data-position="botton" data-tooltip="Novo"> <i
+										class="material-icons">add_box</i>
+									</a>
+
+
+									<button
+										class="waves-effect waves-teal btn-floating red tooltipped"
+										data-position="botton" data-tooltip="Limpar" type="reset"
+										name="action">
+										<i class="medium material-icons">clear</i>
+									</button>
+
+									<a href="/listarativos"
+										class="waves-effect waves-teal btn-floating grey darken-2 tooltipped"
+										data-position="botton" data-tooltip="Listar ativos"
+										type="button" name="listar"> <i class="material-icons">list</i>
+									</a> <a
+										th:href="${ativoobj.idativo == null} ? @{/cadastroativo} : @{/susgestaoformula/{idat}(idat=${ativoobj.idativo})}"
+										class="waves-effect waves-teal btn-floating green tooltipped"
+										data-position="botton" data-tooltip="Sugestão Fórmula"
+										type="button" name="sugestaoformula"> <i
+										class="material-icons">open_in_new</i>
+									</a>
+								</div>
+							</div>
+						</div>
+
+
+
+						<div class="row">
+
+							<div class="input-field col s6 m3">
+								<span>Data cadastro: </span> <span
+									th:text="${#dates.format(ativoobj.data_cadastro, 'dd/MM/yyyy')}"></span>
+
+							</div>
+							<div class="input-field col s6 m3">
+								<span>Última alteração: </span> <span
+									th:text="${#dates.format(ativoobj.data_alteracao, 'dd/MM/yyyy')}"></span>
+							</div>
+
+						</div>
+						<hr class="rounded"></hr>
+						<br />
+						<div class="row">
+
+							<input type="hidden" name="idativo" class="validade"
+								th:field="*{idativo}" readonly="readonly">
+
+							<div class="input-field col s12 m9">
+								<input id="nome" type="text" name="nome" class="validate"
+									th:field="*{nome}"> <label for="nome">Nome</label>
+							</div>
+							<div class="input-field col s12 m3">
+								<select multiple id="especialidades" name="especialidades" th:field="*{especialidades}">
+									<option value="" disabled="disabled">Selecione</option>
+									<option th:each="e : ${especialidades}" th:value="${e.idespecialidade}" th:text="${e.nome}">
+										
+																	 
+										
+									</option>
+								</select>
+								<label>Especialidade</label>
+							</div>
+
+						</div>
+						<div class="row">
+							<div class="input-field col s12 m9">
+								<input id="sinonimo" type="text" name="sinonimo"
+									class="validate" th:field="*{sinonimo}"> <label
+									for="nome">Sinônimo</label>
+							</div>
+							<div class="input-field col s12 m3">
+								<select id="unidade" name="unidade" class="validate"
+									th:field="*{unidade}">
+									<option value="">Unidade</option>
+									<option th:each="u : ${unidades}" th:value="${u.idunidade}"
+										th:text="${u.unidade}"></option>
+
+								</select>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="input-field col s12 m4">
+								<input id="dosagem_usual" type="text" name="dosagem_usual"
+									class="validate" th:field="*{dosagem_usual}"> <label
+									for="nome">Dosagem usual</label>
+							</div>
+							<div class="input-field col s12 m4">
+								<input id="dosagem_minima" type="text" name="dosagem_minima"
+									class="validate" th:field="*{dosagem_minima}"> <label
+									for="nome">Dosagem mínima</label>
+							</div>
+							<div class="input-field col s12 m4">
+								<input id="dosagem_maxima" type="text" name="dosagem_maxima"
+									class="validate" th:field="*{dosagem_maxima}"> <label
+									for="nome">Dosagem máxima</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12 m12">
+								<textarea id="indicacao" name="indicacao"
+									class="validate materialize-textarea" th:field="*{indicacao}"
+									data-length="1000"></textarea>
+								<label for="nome">Indicação</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12 m12">
+								<textarea id="beneficios" name="beneficios"
+									class="validate  materialize-textarea" th:field="*{beneficios}"
+									data-length="1000"></textarea>
+								<label for="nome">Benefícios</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12 m12">
+								<textarea id="mecanismo_acao" name="mecanismo_acao"
+									class="validate materialize-textarea"
+									th:field="*{mecanismo_acao}" data-length="1000"></textarea>
+								<label for="nome">Mecanismo de ação</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12 m12">
+								<textarea id="estudos" name="estudos"
+									class="validate materialize-textarea" th:field="*{estudos}"
+									data-length="1000"></textarea>
+								<label for="nome">Estudos</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12 m12">
+								<textarea id="contra_indicacao" name="contra_indicacao"
+									class="validate materialize-textarea"
+									th:field="*{contra_indicacao}" data-length="1000"></textarea>
+								<label for="nome">Contra indicação</label>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="file-field input-field col s12 m4">
+								<div class="btn">
+									<span>Ficha técnica</span> <input type="file" name="file">
+								</div>
+								<div class="file-path-wrapper">
+									<input class="file-path validate" type="text"
+										placeholder="Upload de um arquivo">
+								</div>
+							</div>
+							<div class="input-field col s12 m8">
+								<textarea id="observacao" type="text" name="observacao"
+									class="materialize-textarea" data-length="120"
+									th:field="*{observacao}"></textarea>
+								<label for="nome">Observacao</label>
+							</div>
+						</div>
+
+					</form>
+
+				</div>
+
+			</div>
+
+			<input type="hidden" id="msgSucesso" th:value="${msgSucesso}">
+			<input type="hidden" id="msgErro" th:value="${msgErro}">
+		</div>
+		<div th:insert="/index :: footer"></div>
+	</main>
+
+
+	<!-- Scripts -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="/js/materialize.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.2/moment.min.js"></script>
+
+	<!-- External libraries -->
+
+	<!-- jqvmap -->
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.min.js"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.world.js"
+		charset="utf-8"></script>
+	<script type="text/javascript"
+		src="/js/jqvmap/jquery.vmap.sampledata.js"></script>
+
+	<!-- ChartJS -->
+	<script type="text/javascript" src="/js/Chart.js"></script>
+	<script type="text/javascript" src="/js/Chart.Financial.js"></script>
+
+
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+	<script src="/js/imagesloaded.pkgd.min.js"></script>
+	<script src="/js/masonry.pkgd.min.js"></script>
+
+
+	<!-- Initialization script -->
+	<script src="/js/admin.js"></script>
+	<script src="/js/page-scripts/dashboard.js"></script>
+	<script src="/js/init.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.min.js"></script>
+
+	<script type="text/javascript">
+		document.addEventListener("DOMContentLoaded", function() {
+			$('.preloader-background').delay(1700).fadeOut('slow');
+
+			$('.preloader-wrapper').delay(1700).fadeOut();
+		});
+	</script>
+
+
+	<script type="text/javascript">
+		function validarCampos() {
+
+			nome = document.getElementById('nome').value;
+			unidade = document.getElementById('unidade').value;
+			
+			if (nome === '') {
+
+				M.toast({
+					html : 'Nome deve ser preenchido',
+					classes : 'red darken-1 rounded'
+				});
+
+				return false;
+			}
+			
+			if (unidade === '') {
+
+				M.toast({
+					html : 'Unidade deve ser preenchido',
+					classes : 'red darken-1 rounded'
+				});
+
+				return false;
+			}
+
+			return true;
+
+		}
+	</script>
+
+	<script type="text/javascript">
+		var mensagemErro = document.getElementById('msgErro').value;
+		var mensagemSucesso = document.getElementById('msgSucesso').value;
+
+		if (mensagemSucesso) {
+			M.toast({
+				html : mensagemSucesso,
+				displayLength : 5000,
+				classes : 'green darken-1 rounded'
+			});
+		}
+		if (mensagemErro) {
+			M.toast({
+				html : mensagemErro,
+				displayLength : 5000,
+				classes : 'red darken-1 rounded'
+			});
+		}
+	</script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.tooltipped').tooltip();
+		});
+	</script>
+
+</body>
+</html>

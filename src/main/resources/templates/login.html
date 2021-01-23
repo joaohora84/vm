@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Magistral Personal</title>
+<link rel="shortcut icon" href="/img/favicon.ico"></link>
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+<body>
+	<div class="row">
+		<div class="col s12 m8 l4 offset-m2 offset-l4">
+		
+				<br/>
+				<br/>
+				<br/>
+			<div class="card">
+				
+				
+					<img style="position: relative; top:50%; left:50%; margin-top:10px; margin-left:-50px;" width="100" height="120" src="/img/logo_mg.jpeg">
+				
+
+				<form th:action="@{/login}" method="post">
+					<div class="card-content">
+								
+						<div class="form-field">
+
+							<label for="username">Usuário</label> <input type="text" id="username" name="username" autofocus="autofocus">
+						</div>
+						<div class="form-field">
+							<label for="password">Senha</label> <input type="password" 	id="password" name="password">
+						</div>
+						<br />
+						<p>
+							<label> <input type="checkbox" disabled="disabled" /> <span>Recuperar
+									senha</span>
+							</label>
+						</p>
+					</div>
+					<input type="submit" value="Entrar" class="btn btn-large blue"
+						style="margin-top: 30px; width: 100%;">
+				</form>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/materialize.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</body>
+</html>

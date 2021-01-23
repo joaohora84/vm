@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name="description" content="">
+<title>Magistral Personal</title>
+<link rel="shortcut icon" href="/img/favicon.ico"></link>
+<link
+	href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"
+	rel="stylesheet">
+<link href="css/jqvmap.css" rel="stylesheet">
+<link href="css/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+<!-- Fullcalendar-->
+<link href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" rel="stylesheet">
+<link href="/css/jqvmap.css" rel="stylesheet">
+<link href="/css/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+<!-- Fullcalendar-->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.css" rel="stylesheet">
+<!-- Materialize-->
+<link href="/css/admin-materialize.min.css" rel="stylesheet">
+<!-- Material Icons-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+	<main>
+		<div class="container">
+			<div th:insert="/index :: header"></div>
+			<div class="col s12">
+				<h4 class="blue-text center">Prescrição</h4>
+				<div class="card grey lighten-3" style="padding: 20px 20px 20px 20px">
+
+					<div class="row" th:object="${prescricaoobj}"
+						style="font-size: 20px;">
+						<br/>
+						<span class="blue-text">Dr(a):</span> <span
+							th:text="*{prescritor.nome}"></span><br> <span
+							th:text="*{prescritor.conselho}"></span> <span
+							th:text="*{prescritor.uf}"></span>
+							<span
+							th:text="*{prescritor.numeroConselho}"></span><br>
+							<br/>
+							<span class="blue-text">Data: </span> <span class="center"
+								th:text="*{#dates.format(data_cadastro, 'dd/MM/yyyy')}"></span>
+							 <br /> <br />
+						<div class="divider"></div>
+
+						<br /> <span class="blue-text">Paciente: Sr(a)</span> <span
+							th:text="*{paciente.nome}"></span><br> <span
+							class="blue-text">Endereço: </span> <span
+							th:text="*{paciente.rua}"></span> <span
+							th:text="*{paciente.numero}"></span> <br /> <br />
+						<div class="divider"></div>
+						<br/>
+						<label class="blue-text" style="font-size: 20px;">Fórmula prescrita: </label> 
+						<span th:text="${formulaobj.nome}"></span>
+						<br/>
+						
+						
+						<span class="blue-text" style="font-size: 20px;" >Forma farmacêutica: </span> 
+						<span th:text="${formulaobj.forma_farmaceutica.nome}"></span>
+						<br/>
+						
+						
+						
+						<div class="blue">
+						<h6 class="white-text center" style="font-size: 20px;">Componentes</h6>
+						</div>
+						<div class="divider"></div>
+						<br />
+						<div>
+							<table id="table-custom-elements"
+								class="row-border responsive-table striped" cellspacing="0"
+								width="100%">
+								<thead>
+									<tr>
+
+										<th>Insumo</th>
+										<th>QTD</th>
+										<th>Unidade</th>
+
+									</tr>
+
+								</thead>
+								<tbody>
+									<tr th:each=" i : ${ifp}">
+
+										<td th:text="${i.insumo_formula.insumo.nome}"></td>
+										<td th:text="${i.qtd}"></td>
+										<td th:text="${i.insumo_formula.unidade.unidade}"></td>
+
+									</tr>
+
+								</tbody>
+
+							</table>
+
+						</div>
+						<br />
+						<div class="divider"></div>
+						<br /> <span class="blue-text">Posologia: </span> <span
+							th:text="${formulaobj.posologia}"></span> <br /> <br />
+						<div class="divider"></div>
+						<br />
+						<div class="center">
+							
+						</div>
+						<br />
+						<div class="divider"></div>
+
+
+						<p class="center blue-text"
+							th:text="*{prescritor.rua} + ' ' + *{prescritor.numero}"></p>
+
+					</div>
+
+					<div class="divider"></div>
+					<br />
+					<button class="btn waves-effect waves-light blue" type="button"
+						name="imprimir">
+						Imprimir <i class="material-icons right">local_printshop</i>
+					</button>
+
+				</div>
+
+			</div>
+		</div>
+		<!-- <div th:insert="/index :: footer"> -->
+
+
+		<input type="hidden" id="msgSucesso" th:value="${msgSucesso}">
+		<input type="hidden" id="msgErro" th:value="${msgErro}"> <input
+			type="hidden" id="retorno" th:value="${retorno}">
+
+	</main>
+
+
+	<!-- Scripts -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="/js/materialize.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.2/moment.min.js"></script>
+
+	<!-- External libraries -->
+
+	<!-- jqvmap -->
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.min.js"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.world.js" charset="utf-8"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.sampledata.js"></script>
+
+	<!-- ChartJS -->
+	<script type="text/javascript" src="/js/Chart.js"></script>
+	<script type="text/javascript" src="/js/Chart.Financial.js"></script>
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
+	<script src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+	<script src="/js/imagesloaded.pkgd.min.js"></script>
+	<script src="/js/masonry.pkgd.min.js"></script>
+
+
+	<!-- Initialization script -->
+	<script src="/js/admin.js"></script>
+	<script src="/js/page-scripts/dashboard.js"></script>
+	<script src="/js/init.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.min.js"></script>
+
+	<script type="text/javascript">
+		function validarCampos() {
+
+			nome = document.getElementById('nome').value;
+			posologia = document.getElementById('posologia').value;
+			
+			
+
+			if (nome === '') {
+
+				M.toast({
+					html : 'Nome da fórmula não pode ser vazio',
+					classes : 'red darken-1 rounded'
+				});
+
+				return false;
+			} else if (posologia === '') {
+
+				M.toast({
+					html : 'Posologia não pode ser vazio',
+					classes : 'red darken-1 rounded'
+				});
+
+				return false;
+			}
+
+			return true;
+
+		}
+	</script>
+
+	<script type="text/javascript">
+		function validarCamposInsumo() {
+			
+			qtd_minima = document.getElementById('qtd_minima').value;
+			qtd_sugerida = document.getElementById('qtd_sugerida').value;
+			qtd_maxima = document.getElementById('qtd_maxima').value;
+			unidade = document.getElementyById('unidade').value
+
+			if (qtd_minima === '') {
+
+				M.toast({
+					html : 'Quantidade mínima deve ser preenchida',
+					classes : 'red darken-1 rounded'
+				});
+
+				return false;
+			} else if (qtd_sugerida === '') {
+
+				M.toast({
+					html : 'Quantidade sugerida deve ser preenchida',
+					classes : 'red darken-1 rounded'
+				});
+
+				return false;
+			} else if (qtd_maxima === '') {
+
+				M.toast({
+					html : 'Quantidade máxima deve ser preenchida',
+					classes : 'red darken-1 rounded'
+				});
+
+				return false;
+			} else if (unidade === '') {
+
+				M.toast({
+					html : 'Unidade deve ser preenchida',
+					classes : 'red darken-1 rounded'
+				});
+
+				return false;
+			}
+
+			return true;
+
+		}
+	</script>
+
+	<script type="text/javascript">
+		var mensagemErro = document.getElementById('msgErro').value;
+		var mensagemSucesso = document.getElementById('msgSucesso').value;
+
+		if (mensagemSucesso) {
+			M.toast({
+				html : mensagemSucesso,
+				displayLength : 5000,
+				classes : 'green darken-1 rounded'
+			});
+		}
+		if (mensagemErro) {
+			M.toast({
+				html : mensagemErro,
+				displayLength : 5000,
+				classes : 'red darken-1 rounded'
+			});
+		}
+	</script>
+
+	<script>
+		$(function() {
+			var valorDaDiv = $(".produtosIntTitulo").text();
+			$("#ins").val(valorDaDiv);
+		});
+	</script>
+
+	<script type="text/javascript">
+		function uploadFile() {
+
+			$(document).ready(function() {
+				$('input#input_text, textarea#posologia').characterCounter();
+			});
+		}
+	</script>
+
+
+
+
+	<script type="text/javascript">
+	
+		var retorno = document.getElementById('retorno').value;
+		
+		if (retorno) {
+			$(document).ready(function() {
+				$('.modal').modal();
+				$('.modal').modal('open');
+			});
+
+		}
+	</script>
+
+	<script type="text/javascript">
+		document.addEventListener('DOMContentLoaded', function() {
+			var elems = document.querySelectorAll('.tooltipped');
+			var instances = M.Tooltip.init(elems, options);
+		});
+
+		// Or with jQuery
+
+		$(document).ready(function() {
+			$('.tooltipped').tooltip();
+		});
+	</script>
+	<script>
+		var $range = document.querySelector('#qtd'),
+    	    $value = document.querySelector('#qtdsugerida');
+
+		$range.addEventListener('input', function() {
+		  $value.textContent = this.value;
+		});
+	</script>
+
+
+</body>
+</html>

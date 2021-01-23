@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name="description" content="">
+<title>Magistral Personal</title>
+<link rel="shortcut icon" href="/img/favicon.ico"></link>
+<link href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css" rel="stylesheet">
+<link href="/css/jqvmap.css" rel="stylesheet">
+<link href="/css/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+<!-- Fullcalendar-->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.css" rel="stylesheet">
+<!-- Materialize-->
+<link href="/css/admin-materialize.min.css" rel="stylesheet">
+<!-- Material Icons-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+
+	<main>
+		<div class="container">
+			<div th:insert="/indexcatalogo :: header"></div>
+			<div class="row">
+				<div class="col s12">
+				
+					<div class="card grey lighten-4" style="padding: 20px 20px 20px 20px;">
+
+						<form action="pesquisarativocatalogo" method="post">
+							<h6>Filtrar por especialidade e/ou inicial</h6>
+							<div class="row">
+								<div class="input-field col s12 m4">
+									<select id="especialidade" name="especialidade">
+										<option value="" >Todos</option>
+										<option th:each="e : ${especialidades}"
+											th:value="${e.idespecialidade}" th:text="${e.nome}"></option>
+									</select>
+								</div>
+								<div class="input-field col s12 m4">
+
+									<select id="nomepesquisa" name="nomepesquisa">
+										<option value="" >Todos</option>
+										<option value="a">A</option>
+										<option value="b">B</option>
+										<option value="c">C</option>
+										<option value="d">D</option>
+										<option value="e">E</option>
+										<option value="f">F</option>
+										<option value="g">G</option>
+										<option value="h">H</option>
+										<option value="i">I</option>
+										<option value="j">J</option>
+										<option value="k">K</option>
+										<option value="l">L</option>
+										<option value="m">M</option>
+										<option value="n">N</option>
+										<option value="o">O</option>
+										<option value="p">P</option>
+										<option value="q">Q</option>
+										<option value="r">R</option>
+										<option value="s">S</option>
+										<option value="t">T</option>
+										<option value="u">U</option>
+										<option value="v">V</option>
+										<option value="x">X</option>
+										<option value="y">Y</option>
+										<option value="z">Z</option>
+										<option value="${nomepesquisa} ? ${nomepesquisa} : ''" ></option>
+										
+									</select>
+
+								</div>
+								<div class="input-field">
+									<button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
+										Buscar <i class="material-icons right">search</i>
+
+									</button>
+								</div>
+
+							</div>
+							
+						</form>
+						<div class="divider"></div>
+						<h6>Buscar por nome</h6>
+						<div class="row">
+							<div class="search-wrapper">
+								<form action="pesquisarativopornome" method="post" id="pesquisarativopornome">
+									<div class="input-field col s12 m12">
+										<input id="nome" type="search" name="nome" placeholder="Digite o nome do ativo e tecle enter" required>
+										<label for="nome" class="label-icon"></label>
+										<i class="material-icons">close</i>
+									</div>
+								</form>
+
+							</div>
+						</div>
+
+					</div>
+
+
+					<div class="card grey lighten-4"
+						style="padding: 20px 20px 20px 20px">
+
+
+
+						<div class="card-metric-title center"
+							style="font-weight: bold; font-size: 18px;">Ativos</div>
+						<hr class="rounded"></hr>
+						<br />
+
+						<div class="card horizontal" th:each="a : ${ativos}" th:value="${a.idativo}">
+							<div class="card-stacked">
+							
+								<div class="card-content">
+									<p><span class="green-text" th:text="${a.nome}"></span></p>
+									<hr class="rounded"></hr>
+									<br/>
+									
+									<div class="row">
+										<div class="col s12 m3">
+											<span style="font-weight: bold; color: #1c1c1c;">Especialidades: </span>
+											<span th:each="e : ${a.especialidades}">
+												<li><span style="color: #1c1c1c;" th:text="${e.nome}"></span></li>
+											</span>
+										</div>
+										<div class="col s12 m3">
+											<span style="font-weight: bold; color: #1c1c1c;">Dosagem mínima: </span>
+											<span class="" th:text="${a.dosagem_minima}"></span>&nbsp;<span style="font-weight: bold; color: #1c1c1c;" th:text="${a.unidade.unidade}"></span>
+										</div>
+										
+										<div class="col s12 m3">
+											<span style="font-weight: bold; color: #1c1c1c;">Dosagem máxima: </span>
+										<span class="" th:text="${a.dosagem_maxima}"></span>&nbsp;<span style="font-weight: bold; color: #1c1c1c; " th:text="${a.unidade.unidade}"> </span>
+										</div>
+										
+									</div>
+									
+								</div>
+								<div class="card-action">
+									<a class="tooltipped blue-text" data-position="top" data-tooltip="Baixar PDF."
+									     th:href="@{/downloadfile/{idativ}(idativ=${a.idativo})}">
+										<i class="material-icons">picture_as_pdf</i>
+										<span >FICHA TÉCNICA</span>	
+											
+									</a>
+								</div>
+								
+																	
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+						
+					
+
+
+
+					</div>
+
+					<!-- PAGINAÇÃO -->
+						<div class="row center" style="margin-top: 30px;">
+							<span th:if="${ativos.hasPrevious()}"> <a
+								th:href="@{/ativopagecatalogo(page=${ativos.number-1}, size=${ativos.size}, nomepesquisa=${nomepesquisa}, especialidade=${especialidade})}">
+								<i class="small material-icons">chevron_left</i></a>
+							</span>
+
+							<th:ul class="pagination blue-text" th:each="i: ${#numbers.sequence(0, ativos.totalPages -1)}">
+
+								<li class="waves-effect">
+									<a	th:href="@{/ativopagecatalogo(page=${i}, size=${ativos.size}, nomepesquisa=${nomepesquisa}, especialidade=${especialidade})}">[[${i} + 1]]</a>
+								</li>
+
+							</th:ul>
+							<span th:if="${ativos.hasNext()}"> <a
+								th:href="@{/ativopagecatalogo(page=${ativos.number+1}, size=${ativos.size}, nomepesquisa=${nomepesquisa}, especialidade=${especialidade})}">
+								<i class="small material-icons">chevron_right</i></a>
+							</span>
+
+						</div>
+
+					</div>
+
+				
+		
+		<div th:insert="/indexcatalogo :: footer"></div>
+		<input type="hidden" id="msgExclusao" th:value="${msgExclusao}">
+		
+	</main>
+
+	<!-- Scripts -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="/js/materialize.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.2/moment.min.js"></script>
+
+	<!-- External libraries -->
+
+	<!-- jqvmap -->
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.min.js"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.world.js" charset="utf-8"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.sampledata.js"></script>
+
+	<!-- ChartJS -->
+	<script type="text/javascript" src="/js/Chart.js"></script>
+	<script type="text/javascript" src="/js/Chart.Financial.js"></script>
+
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
+	<script src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+	<script src="/js/imagesloaded.pkgd.min.js"></script>
+	<script src="/js/masonry.pkgd.min.js"></script>
+
+
+	<!-- Initialization script -->
+	<script src="/js/admin.js"></script>
+	<script src="/js/page-scripts/dashboard.js"></script>
+	<script src="/js/init.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.min.js"></script>
+	
+	<script type="text/javascript">
+		
+		$(document).ready(function() {
+			$('.tooltipped').tooltip();
+		});
+	</script>
+
+	<script type="text/javascript">
+		var msgExclusao = document.getElementById('msgExclusao').value;
+		
+		if (msgExclusao) {
+			M.toast({
+				html : msgExclusao,
+				displayLength : 5000,
+				classes : 'green darken-1 rounded'
+			});
+
+		}
+	</script>
+	
+</body>
+</html>

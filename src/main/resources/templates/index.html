@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name="description" content="">
+<title>Magistral Personal</title>
+<link rel="shortcut icon" href="/img/favicon.ico"></link>
+<link
+	href="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.css"
+	rel="stylesheet">
+<link href="/css/jqvmap.css" rel="stylesheet">
+<link href="/css/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
+<!-- Fullcalendar-->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.css"
+	rel="stylesheet">
+<!-- Materialize-->
+<link href="/css/admin-materialize.min.css" rel="stylesheet">
+<!-- Material Icons-->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+	<div th:fragment="header">
+		<header>
+			<div class="navbar-fixed">
+				<nav class="navbar grey lighten-2">
+					
+					
+				
+					<div class="nav-wrapper">
+						
+						<!-- <a href="/index" class="brand-logo center">Magistral Personal</a> -->
+						
+						<ul id="nav-mobile" class="right">
+							<li><a class='dropdown-trigger' href='#'
+								data-target='dropdown1'><i class="material-icons">settings</i></a></li>
+
+							<ul id="dropdown1" class="dropdown-content">
+								<li><a href="/index"><i class="material-icons">person</i>Admin</a></li>
+								<li><a href="/logout"><i class="material-icons">exit_to_app</i>Sair</a></li>
+							</ul>
+						</ul>
+						<a href="#!" data-target="sidenav-left" class="sidenav-trigger left"><i class="material-icons black-text">menu</i></a>
+						
+						
+						
+						<ul id="nav-mobile" class="left hide-on-med-and-down" style="padding-left: 10px;">
+							
+							<li><a href="/indexcatalogo" class="blue-text text-accent-4">Catálogo</a></li>
+							<li><a href="https://drive.google.com/drive/folders/1Iop1Qua4Dns3zQ_bYMqlgaclcjZFdFm7?usp=sharing">Treinamento</a></li>
+							<li><a href="/cadastrousuario">Usuário</a></li>
+							<li><a href="/cadastroprescritor">Prescritor</a></li>
+							<li><a href="/cadastroativo">Ativo</a></li>
+							<li><a href="/cadastrovisita">Visita</a></li>
+							<li><a href="/agenda">Agenda</a></li>
+						</ul>
+					</div>
+				</nav>
+			</div>
+			<ul id="sidenav-left" class="sidenav blue lighten-4">
+				<li><a href="/index" class="logo-container">Magistral Personal</a></li>
+				<li class="no-padding">
+					<ul class="collapsible collapsible-accordion"
+						sec:authorize="hasRole('ROLE_ADMIN')">
+						<li class="bold waves-effect active"><a
+							class="collapsible-header">Cadastros<i
+								class="material-icons chevron">chevron_left</i></a>
+							<div class="collapsible-body">
+								<ul>
+									<li><a href="/cadastrousuario" class="waves-effect active">Usuário<i
+											class="material-icons">account_circle</i></a></li>
+									<li><a href="/cadastroprescritor"
+										class="waves-effect active">Prescritor<i
+											class="material-icons">perm_identity</i></a></li>
+									<li><a href="/cadastroativo" class="waves-effect active">Ativo<i
+											class="material-icons">font_download</i></a></li>
+									<li><a href="/cadastroformula" class="waves-effect">Fórmula<i
+											class="material-icons">list</i></a></li>
+									<li><a href="/cadastrovisitador" class="waves-effect">Visitador<i
+											class="material-icons">person</i></a></li>
+									<li><a href="/cadastrovisita" class="waves-effect">Visita<i
+											class="material-icons">directions_run</i></a></li>
+									<li><a href="/cadastroprescricao" class="waves-effect">Prescrição<i
+											class="material-icons">description</i></a></li>
+									<li><a href="/cadastroclinica" class="waves-effect">Clinica<i
+											class="material-icons">local_hospital</i></a></li>
+									<li><a href="/cadastrosecretaria" class="waves-effect">Secretária<i
+											class="material-icons">record_voice_over</i></a></li>
+
+								</ul>
+							</div></li>
+
+						<li class="bold waves-effect"><a class="collapsible-header">Tabelas<i
+								class="material-icons chevron">chevron_left</i></a>
+							<div class="collapsible-body">
+								<ul>
+									<li><a href="/listarusuarios" class="waves-effect">Usuários<i
+											class="material-icons">list</i></a></li>
+									<li><a href="/listarprescritores" class="waves-effect">Prescritores<i
+											class="material-icons">list</i></a></li>
+									<li><a href="/listarativos" class="waves-effect">Ativos<i
+											class="material-icons">list</i></a></li>
+									<li><a href="/listarformulas" class="waves-effect">Fórmulas<i
+											class="material-icons">list</i></a></li>
+									<li><a href="/listarvisitadores" class="waves-effect">Visitadores<i
+											class="material-icons">list</i></a></li>
+									<li><a href="/listarvisitas" class="waves-effect">Visitas<i
+											class="material-icons">list</i></a></li>
+									<li><a href="/listarprescricoes" class="waves-effect">Prescrições<i
+											class="material-icons">list</i></a></li>
+									<li><a href="/listarclinicas" class="waves-effect">Clínicas<i
+											class="material-icons">list</i></a></li>
+									<li><a href="/listarsecretarias" class="waves-effect">Secretárias<i
+											class="material-icons">list</i></a></li>
+								</ul>
+							</div></li>
+
+						<li class="bold waves-effect"><a class="collapsible-header">CATÁLOGO<i
+								class="material-icons chevron">chevron_left</i></a>
+							<div class="collapsible-body">
+								<ul>
+									<li><a href="/catalogoativos" class="waves-effect">Catálogo
+											Ativos<i class="material-icons">view_list</i>
+									</a></li>
+									<li><a href="/catalogoativoscompleto"
+										class="waves-effect">Catálogo Ativos completo<i
+											class="material-icons">view_list</i>
+									</a></li>
+
+								</ul>
+							</div></li>
+
+
+						<li class="bold waves-effect"><a class="collapsible-header">RELATORIOS<i
+								class="material-icons chevron">chevron_left</i></a>
+							<div class="collapsible-body">
+								<ul>
+
+									
+									<li><a href="/visitador_relatorios.html"
+										class="waves-effect">Relatórios de Visitador<i
+											class="material-icons">euro_symbol</i></a></li>
+									<li><a href="/visita_relatorios" class="waves-effect">Relatórios
+											de Visita<i class="material-icons">touch_app</i>
+									</a></li>
+								</ul>
+							</div></li>
+
+
+						<li class="bold waves-effect"><a class="collapsible-header">Agenda<i
+								class="material-icons chevron">chevron_left</i></a>
+							<div class="collapsible-body">
+								<ul>
+									<li><a href="/agenda" class="waves-effect">Calendar<i
+											class="material-icons">cloud</i></a></li>
+								</ul>
+							</div></li>
+						<li class="bold waves-effect"><a class="collapsible-header">Conta<i
+								class="material-icons chevron">chevron_left</i></a>
+							<div class="collapsible-body">
+								<ul>
+									<li><a href="/logout" class="waves-effect">Sair<i
+											class="material-icons">person</i></a></li>
+
+								</ul>
+							</div></li>
+					</ul>
+				</li>
+			</ul>
+			
+				
+		</header>
+	</div>
+
+	 <main>
+	
+
+	</main>
+     <div th:fragment="footer">
+   <footer class="page-footer ">
+   
+  <div class="container">
+    <div class="row">
+      <div class="col s6">
+         <img class="materialize-logo" width="100" height="120" src="/img/logo_mg.jpeg">
+        
+      </div>
+     
+     
+      <div class="col s6">
+      
+						<div class="row">
+
+								<a title="Facebook" href="https://www.facebook.com/farmaciasbiovidapalmas/"
+									class="waves-effect waves-teal btn-floating" style="background-color: #3b5998">
+									<i class="fa fa-facebook"></i>
+								</a>
+								<a title="Instagram" href="https://www.instagram.com/farmaciasbiovida/"
+									class="waves-effect waves-teal btn-floating" style="background-color: #f56040"> <i
+										class="fa fa-instagram"></i>
+								</a>
+								<a title="Whatsapp"
+									href="https://api.whatsapp.com/send?phone=5563984680042"
+									class="waves-effect waves-teal btn-floating" style="background-color: #34af23"> <i
+										class="fa fa-whatsapp"></i>
+								</a>
+								<a title="Lola online farmaciabiovia.com.br" href="https://www.farmaciabiovida.com.br"
+									class="waves-effect waves-teal btn-floating grey darken-1"> <i
+										class="fa fa-shopping-basket"></i>
+								</a>
+						
+						</div>
+
+					</div>
+    </div>
+  </div>
+			<div class="">
+
+				<p class="center-align">
+					<a href="www.farmaciabiovida.com.br">Farmácias Biovida</a>. Todos
+					os direitos reservados
+				</p>
+
+			</div>
+		</footer>
+	</div>
+	<!-- Scripts -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="/js/materialize.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.2/moment.min.js"></script>
+
+	<!-- External libraries -->
+
+	<!-- jqvmap -->
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.min.js"></script>
+	<script type="text/javascript" src="/js/jqvmap/jquery.vmap.world.js"
+		charset="utf-8"></script>
+	<script type="text/javascript"
+		src="/js/jqvmap/jquery.vmap.sampledata.js"></script>
+
+	<!-- ChartJS -->
+	<script type="text/javascript" src="/js/Chart.js"></script>
+	<script type="text/javascript" src="/js/Chart.Financial.js"></script>
+
+
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.7.0/fullcalendar.min.js"></script>
+	<script
+		src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+	<script src="/js/imagesloaded.pkgd.min.js"></script>
+	<script src="/js/masonry.pkgd.min.js"></script>
+
+
+	<!-- Initialization script -->
+	<script src="/js/admin.js"></script>
+	<script src="/js/page-scripts/dashboard.js"></script>
+	<script src="/js/init.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.min.js"></script>
+
+	<script type="text/javascript">
+ 
+	  $(document).ready(function(){
+	    $('.slider').slider();
+	  });
+	</script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.tooltipped').tooltip();
+		});
+	</script>
+</body>
+</html>
