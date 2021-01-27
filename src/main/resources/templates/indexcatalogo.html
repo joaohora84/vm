@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5" th:fragment="modelheader">
   <head>
   	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,31 +27,37 @@
     <header>
       <div class="navbar-fixed">
         <nav class="navbar grey lighten-2">
-          <div class="nav-wrapper">
-          	<a href="/indexcatalogo" class="brand-logo grey-text text-darken-4">Magistral Personal</a>
-					<ul id="nav-mobile" class="right">
-						<li><a class='dropdown-trigger' href='#'
-							data-target='dropdown1'><i class="material-icons">settings</i></a></li>
+					<div class="nav-wrapper">
+						<a href="/indexcatalogo"
+							class="brand-logo grey-text text-darken-4">Magistral Personal</a>
+						<ul id="nav-mobile" class="right">
+							<li><a class='dropdown-trigger' href='#'
+								data-target='dropdown1'><i class="material-icons">settings</i></a></li>
 
-						<ul id="dropdown1" class="dropdown-content">
-							<li><a href="/index"><i class="material-icons">person</i>Admin</a></li>
-							<li><a href="/logout"><i class="material-icons">exit_to_app</i>Sair</a></li>
+							<ul id="dropdown1" class="dropdown-content">
+								<li>
+									<a href="/index" sec:authorize="hasRole('ADMIN')">
+								 		<i class="material-icons">person</i>Admin</a></li>
+								<li><a href="/logout"><i class="material-icons">exit_to_app</i>Sair</a></li>
+							</ul>
 						</ul>
-					</ul>
-					<a href="#!" data-target="sidenav-left" class="sidenav-trigger left"><i class="material-icons black-text">menu</i></a>
-					<ul id="nav-mobile" class="left hide-on-med-and-down" style="padding-left: 10px;">
-							<li><a href="/index" class="blue-text text-accent-4">Admin</a></li>
+						<a href="#!" data-target="sidenav-left"
+							class="sidenav-trigger left"><i
+							class="material-icons black-text">menu</i></a>
+						<ul id="nav-mobile" class="left hide-on-med-and-down"
+							style="padding-left: 10px;">
+							<li><a href="/index" class="blue-text text-accent-4" sec:authorize="hasRole('ADMIN')">Admin</a></li>
 							<li><a href="/catalogoativos">Ativos Resumido</a></li>
 							<li><a href="/catalogoativoscompleto">Ativos Completo</a></li>
 						</ul>
-          </div>
-        </nav>
+					</div>
+				</nav>
       </div>
       <ul id="sidenav-left" class="sidenav blue lighten-4">
         <li><a href="/" class="logo-container">Magistral Personal</a></li>
         	<!-- <img src="/img/logo_magistral_personal.jpeg"></img> -->
         <li class="no-padding">
-          <ul class="collapsible collapsible-accordion" sec:authorize="hasRole('ROLE_ADMIN')">
+          <ul class="collapsible collapsible-accordion">
 						<li class="bold waves-effect active" ><a
 							class="collapsible-header">Catálogo<i
 								class="material-icons chevron">chevron_left</i></a>
@@ -73,7 +79,7 @@
 						<div class="collapsible-body">
 							<ul>
 								<li>
-								 	<a href="/index" class="waves-effect">Admin
+								 	<a href="/index" class="waves-effect" sec:authorize="hasRole('ADMIN')">Admin
 								 		<i class="material-icons">person</i>
 								 	</a>
 								 </li>
