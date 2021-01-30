@@ -164,6 +164,9 @@ public class AtivoController {
 			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable) {
 
 		Page<Ativo> ativos = null;
+		
+		System.out.println("ESPECIALIDADE: " + especialidade);
+		System.out.println("NOME: " + nomepesquisa);
 
 		if (especialidade != null) {
 
@@ -491,6 +494,8 @@ public class AtivoController {
 			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable) {
 
 		Page<Ativo> ativos = null;
+		
+		
 
 		if (especialidade != null) {
 
@@ -518,6 +523,9 @@ public class AtivoController {
 			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable) {
 
 		Page<Ativo> ativos = null;
+		
+		System.out.println("ESPECIALIDADE: " + especialidade);
+		System.out.println("NOME: " + nomepesquisa);
 
 		if (especialidade != null) {
 
