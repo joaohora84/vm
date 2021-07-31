@@ -160,17 +160,20 @@
 							</tbody>
 						</table>
 
-						<!-- PAGINAÇÃO -->
+						<!-- PAGINAÇÃO-->
 						<div class="row center" style="margin-top: 30px;">
 							<span th:if="${ativos.hasPrevious()}"> <a
 								th:href="@{/ativopage(page=${ativos.number-1}, size=${ativos.size}, nomepesquisa=${nomepesquisa}, especialidade=${especialidade})}"><i
 									class="small material-icons">chevron_left</i></a>
 							</span>
-
+				
 							<th:ul class="pagination blue-text" th:each="i: ${#numbers.sequence(0, ativos.totalPages -1)}">
-
-								<li class="waves-effect">
-									<a	th:href="@{/ativopage(page=${i}, size=${ativos.size}, nomepesquisa=${nomepesquisa}, especialidade=${especialidade})}">[[${i} + 1]]</a>
+							
+							
+								<li class="waves-effect" th:class="${i+1==ativos.number+1} ? active">
+									
+									<a th:href="@{/ativopage(page=${i}, size=${ativos.size}, nomepesquisa=${nomepesquisa}, especialidade=${especialidade})}"
+									th:text="${i} + 1"></a>
 								</li>
 
 							</th:ul>
@@ -179,7 +182,10 @@
 									class="small material-icons">chevron_right</i></a>
 							</span>
 
-						</div>
+						</div> 
+
+					
+
 
 					</div>
 

@@ -51,6 +51,8 @@ public class AtivoController {
 
 	@Autowired
 	private AtivoFormulaRepository ativoFormulaRepository;
+	
+	final int QUANTIDADE_ITENS_PAGINA = 20;
 
 	@GetMapping("/cadastroativo")
 	public ModelAndView inicio() {
@@ -150,7 +152,7 @@ public class AtivoController {
 		ativoRepository.deleteById(idativ);
 
 		ModelAndView model = new ModelAndView("/listaativo");
-		model.addObject("ativos", ativoRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+		model.addObject("ativos", ativoRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
 		model.addObject("msgExclusao", "Ativo excluida com sucesso!");
 		model.addObject("especialidades", epRepository.findAllByOrderBy());
 
@@ -161,7 +163,7 @@ public class AtivoController {
 	@PostMapping("**/pesquisarativo")
 	public ModelAndView pesquisar(@RequestParam("nomepesquisa") String nomepesquisa,
 			@RequestParam("especialidade") Long especialidade,
-			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable) {
+			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA, sort = { "nome" }) Pageable pageable) {
 
 		Page<Ativo> ativos = null;
 		
@@ -192,7 +194,7 @@ public class AtivoController {
 	public ModelAndView ativos() {
 
 		ModelAndView model = new ModelAndView("/listaativo");
-		model.addObject("ativos", ativoRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+		model.addObject("ativos", ativoRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
 		model.addObject("especialidades", epRepository.findAllByOrderBy());
 		return model;
 
@@ -200,7 +202,7 @@ public class AtivoController {
 
 	@GetMapping("/buscarativoporid/{idativ}")
 	public ModelAndView buscarAtivoPorId(@PathVariable("idativ") long idativ,
-			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable, ModelAndView model) {
+			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA, sort = { "nome" }) Pageable pageable, ModelAndView model) {
 
 		Page<Ativo> ativos = null;
 
@@ -215,7 +217,7 @@ public class AtivoController {
 	
 	@GetMapping("/buscarativoporidativovisita/{idativ}")
 	public ModelAndView buscarAtivoPorIdAtivoVisita(@PathVariable("idativ") long idativ,
-			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable, ModelAndView model) {
+			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA, sort = { "nome" }) Pageable pageable, ModelAndView model) {
 		
 		Optional<AtivoVisita> at = ativoVisitaRepository.findById(idativ);
 		
@@ -258,7 +260,7 @@ public class AtivoController {
 
 	@GetMapping("/ativopage")
 	public ModelAndView carregaAtivoPorPaginacao(@RequestParam("nomepesquisa") String nomepesquisa,
-			@RequestParam("especialidade") Long especialidade, @PageableDefault(size = 5) Pageable pageable,
+			@RequestParam("especialidade") Long especialidade, @PageableDefault(size = QUANTIDADE_ITENS_PAGINA) Pageable pageable,
 			ModelAndView model) {
 
 		if (nomepesquisa != "" || !nomepesquisa.equals(null) || !especialidade.equals("")
@@ -269,7 +271,7 @@ public class AtivoController {
 		} else {
 
 			Page<Ativo> pageAtivo = ativoRepository
-					.findAll(PageRequest.of(pageable.getPageNumber(), 5, Sort.by("nome")));
+					.findAll(PageRequest.of(pageable.getPageNumber(), QUANTIDADE_ITENS_PAGINA, Sort.by("nome")));
 			model.addObject("ativos", pageAtivo);
 			model.addObject("especialidades", epRepository.findAllByOrderBy());
 			model.addObject("nomepesquisa", nomepesquisa);
@@ -287,18 +289,18 @@ public class AtivoController {
 	@GetMapping("/ativopage/page/{page}")
 	public ModelAndView carregaAtivoPorPaginacaoPage(@RequestParam("nomepesquisa") String nomepesquisa,
 			@RequestParam("page") int pagina, @RequestParam("especialidade") Long especialidade,
-			@PageableDefault(size = 5) Pageable pageable, ModelAndView model) {
+			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA) Pageable pageable, ModelAndView model) {
 
 		Page<Ativo> pageAtivo = null;
 
 		if (especialidade != null) {
 
 			pageAtivo = ativoRepository.getAtivoByEspecialidadeNome(especialidade, nomepesquisa,
-					PageRequest.of(pagina, 5, Sort.by("nome")));
+					PageRequest.of(pagina, QUANTIDADE_ITENS_PAGINA, Sort.by("nome")));
 
 		} else {
 
-			pageAtivo = ativoRepository.getAtivoByName(nomepesquisa, PageRequest.of(pagina, 5, Sort.by("nome")));
+			pageAtivo = ativoRepository.getAtivoByName(nomepesquisa, PageRequest.of(pagina, QUANTIDADE_ITENS_PAGINA, Sort.by("nome")));
 
 		}
 
@@ -316,7 +318,7 @@ public class AtivoController {
 	public ModelAndView catalogoativos() {
 
 		ModelAndView model = new ModelAndView("/catalogoativos");
-		model.addObject("ativos", ativoRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+		model.addObject("ativos", ativoRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
 		model.addObject("especialidades", epRepository.findAllByOrderBy());
 		return model;
 
@@ -326,7 +328,7 @@ public class AtivoController {
 	public ModelAndView catalogoativoscompleto() {
 
 		ModelAndView model = new ModelAndView("/catalogoativoscompleto");
-		model.addObject("ativos", ativoRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+		model.addObject("ativos", ativoRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
 		model.addObject("especialidades", epRepository.findAllByOrderBy());
 		return model;
 
@@ -334,7 +336,7 @@ public class AtivoController {
 
 	@GetMapping("/ativopagecatalogo")
 	public ModelAndView carregaAtivoPorPaginacaoCatalogo(
-			@PageableDefault(size = 5) @RequestParam("nomepesquisa") String nomepesquisa,
+			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA) @RequestParam("nomepesquisa") String nomepesquisa,
 			@RequestParam("especialidade") Long especialidade, Pageable pageable, ModelAndView model) {
 
 		if (nomepesquisa != "" || !nomepesquisa.equals(null)) {
@@ -343,7 +345,7 @@ public class AtivoController {
 		} else {
 
 			Page<Ativo> pageAtivo = ativoRepository
-					.findAll(PageRequest.of(pageable.getPageNumber(), 5, Sort.by("nome")));
+					.findAll(PageRequest.of(pageable.getPageNumber(), QUANTIDADE_ITENS_PAGINA, Sort.by("nome")));
 			model.addObject("ativos", pageAtivo);
 			model.addObject("especialidades", epRepository.findAllByOrderBy());
 			model.setViewName("/catalogoativos");
@@ -357,7 +359,7 @@ public class AtivoController {
 	}
 
 	@GetMapping("/ativopagecatalogocompleto")
-	public ModelAndView carregaAtivoPorPaginacaoCatalogoCompleto(@PageableDefault(size = 5) Pageable pageable,
+	public ModelAndView carregaAtivoPorPaginacaoCatalogoCompleto(@PageableDefault(size = QUANTIDADE_ITENS_PAGINA) Pageable pageable,
 			@RequestParam("nomepesquisa") String nomepesquisa, @RequestParam("especialidade") Long especialidade,
 			ModelAndView model) {
 
@@ -369,7 +371,7 @@ public class AtivoController {
 		} else {
 
 			Page<Ativo> pageAtivo = ativoRepository
-					.findAll(PageRequest.of(pageable.getPageNumber(), 5, Sort.by("nome")));
+					.findAll(PageRequest.of(pageable.getPageNumber(), QUANTIDADE_ITENS_PAGINA, Sort.by("nome")));
 
 			model.addObject("ativos", pageAtivo);
 			model.addObject("especialidades", epRepository.findAllByOrderBy());
@@ -386,7 +388,7 @@ public class AtivoController {
 
 	@PostMapping("**/pesquisarativopornometabela")
 	public ModelAndView pesquisarAtovoPorNomeTable(@RequestParam("nome") String nome,
-			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable) {
+			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA, sort = { "nome" }) Pageable pageable) {
 
 		Page<Ativo> ativos = null;
 
@@ -402,7 +404,7 @@ public class AtivoController {
 
 	@PostMapping("**/pesquisarativopornome")
 	public ModelAndView pesquisarAtovoPorNome(@RequestParam("nome") String nome,
-			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable) {
+			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA, sort = { "nome" }) Pageable pageable) {
 
 		Page<Ativo> ativos = null;
 
@@ -418,7 +420,7 @@ public class AtivoController {
 
 	@PostMapping("**/pesquisarativocompletopornome")
 	public ModelAndView pesquisarAtovoCompletoPorNome(@RequestParam("nome") String nome,
-			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable) {
+			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA, sort = { "nome" }) Pageable pageable) {
 
 		Page<Ativo> ativos = null;
 
@@ -433,7 +435,7 @@ public class AtivoController {
 	}
 
 	@GetMapping("/ativopagecatalogocompleto/page/{page}")
-	public ModelAndView carregaAtivoPorPaginacaoCatalogoCompletoPage(@PageableDefault(size = 5) Pageable pageable,
+	public ModelAndView carregaAtivoPorPaginacaoCatalogoCompletoPage(@PageableDefault(size = 20) Pageable pageable,
 			@RequestParam("nomepesquisa") String nomepesquisa, @PathVariable(name = "page") int pagina,
 			@RequestParam("especialidade") Long especialidade, ModelAndView model) {
 
@@ -442,11 +444,11 @@ public class AtivoController {
 		if (especialidade != null) {
 
 			pageAtivo = ativoRepository.getAtivoByEspecialidadeNome(especialidade, nomepesquisa,
-					PageRequest.of(pagina, 5, Sort.by("nome")));
+					PageRequest.of(pagina, QUANTIDADE_ITENS_PAGINA, Sort.by("nome")));
 
 		} else {
 
-			pageAtivo = ativoRepository.getAtivoByName(nomepesquisa, PageRequest.of(pagina, 5, Sort.by("nome")));
+			pageAtivo = ativoRepository.getAtivoByName(nomepesquisa, PageRequest.of(pagina, QUANTIDADE_ITENS_PAGINA, Sort.by("nome")));
 
 		}
 
@@ -461,7 +463,7 @@ public class AtivoController {
 	}
 
 	@GetMapping("/ativopagecatalogo/page/{page}")
-	public ModelAndView carregaAtivoPorPaginacaoCatalogoPage(@PageableDefault(size = 5) Pageable pageable,
+	public ModelAndView carregaAtivoPorPaginacaoCatalogoPage(@PageableDefault(size = QUANTIDADE_ITENS_PAGINA) Pageable pageable,
 			@RequestParam("nomepesquisa") String nomepesquisa, @PathVariable(name = "page") int pagina,
 			@RequestParam("especialidade") Long especialidade, ModelAndView model) {
 
@@ -470,11 +472,11 @@ public class AtivoController {
 		if (especialidade != null) {
 
 			pageAtivo = ativoRepository.getAtivoByEspecialidadeNome(especialidade, nomepesquisa,
-					PageRequest.of(pagina, 5, Sort.by("nome")));
+					PageRequest.of(pagina, QUANTIDADE_ITENS_PAGINA, Sort.by("nome")));
 
 		} else {
 
-			pageAtivo = ativoRepository.getAtivoByName(nomepesquisa, PageRequest.of(pagina, 5, Sort.by("nome")));
+			pageAtivo = ativoRepository.getAtivoByName(nomepesquisa, PageRequest.of(pagina, QUANTIDADE_ITENS_PAGINA, Sort.by("nome")));
 
 		}
 
@@ -491,7 +493,7 @@ public class AtivoController {
 	@PostMapping("**/pesquisarativocatalogo")
 	public ModelAndView pesquisarAtivoCatalogo(@RequestParam("nomepesquisa") String nomepesquisa,
 			@RequestParam("especialidade") Long especialidade,
-			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable) {
+			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA, sort = { "nome" }) Pageable pageable) {
 
 		Page<Ativo> ativos = null;
 		
@@ -520,7 +522,7 @@ public class AtivoController {
 	@PostMapping("**/pesquisarativocatalogocompleto")
 	public ModelAndView pesquisarAtivoCatalogoCompleto(@RequestParam("nomepesquisa") String nomepesquisa,
 			@RequestParam("especialidade") Long especialidade,
-			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable) {
+			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA, sort = { "nome" }) Pageable pageable) {
 
 		Page<Ativo> ativos = null;
 		

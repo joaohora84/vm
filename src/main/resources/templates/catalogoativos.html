@@ -100,10 +100,10 @@
 						</div>
 
 					</div>
+					
 
 
-					<div class="card grey lighten-4"
-						style="padding: 20px 20px 20px 20px">
+					<div class="card grey lighten-4" style="padding: 20px 20px 20px 20px">
 
 
 
@@ -154,7 +154,6 @@
 						</div>
 					</div>
 
-
 				</div>
 						
 					
@@ -172,7 +171,7 @@
 
 							<th:ul class="pagination blue-text" th:each="i: ${#numbers.sequence(0, ativos.totalPages -1)}">
 
-								<li class="waves-effect">
+								<li class="waves-effect" th:class="${i+1==ativos.number+1} ? active">
 									<a	th:href="@{/ativopagecatalogo(page=${i}, size=${ativos.size}, nomepesquisa=${nomepesquisa}, especialidade=${especialidade})}">[[${i} + 1]]</a>
 								</li>
 

@@ -36,6 +36,8 @@ public class ClinicaController {
 	@Autowired
 	private PrescritorRepository prescriorRepository;
 	
+	final int QUANTIDADE_ITENS_PAGINA = 20;
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/cadastroclinica")
 	public ModelAndView inicio() {
 
@@ -103,7 +105,7 @@ public class ClinicaController {
 		clinicaRepository.deleteById(idclin);
 
 		ModelAndView model = new ModelAndView("/listaclinica");
-		model.addObject("clinicas", clinicaRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+		model.addObject("clinicas", clinicaRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
 		model.addObject("msgExclusao", "Clinica removida com sucesso.");
 
 		return model;
@@ -112,7 +114,7 @@ public class ClinicaController {
 
 	@PostMapping("**/pesquisarclinica")
 	public ModelAndView pesquisar(@RequestParam("nome") String nome,
-			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable) {
+			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA, sort = { "nome" }) Pageable pageable) {
 		
 		Page<Clinica> clinicas = null;
 
@@ -130,16 +132,16 @@ public class ClinicaController {
 	public ModelAndView clinicas() {
 
 		ModelAndView modelAndView = new ModelAndView("/listaclinica");
-		modelAndView.addObject("clinicas", clinicaRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+		modelAndView.addObject("clinicas", clinicaRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
 		return modelAndView;
 
 	}
 
 	@GetMapping("/clinicapage")
-	public ModelAndView carregaClinicaPorPaginacao(@PageableDefault(size = 5) Pageable pageable,
+	public ModelAndView carregaClinicaPorPaginacao(@PageableDefault(size = QUANTIDADE_ITENS_PAGINA) Pageable pageable,
 			ModelAndView model) {
 
-		Page<Clinica> pageClinica = clinicaRepository.findAll(PageRequest.of(pageable.getPageNumber(), 5, Sort.by("nome")));
+		Page<Clinica> pageClinica = clinicaRepository.findAll(PageRequest.of(pageable.getPageNumber(), QUANTIDADE_ITENS_PAGINA, Sort.by("nome")));
 		model.addObject("clinicas", pageClinica);
 		model.setViewName("/listaclinica");
 

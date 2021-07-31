@@ -51,6 +51,8 @@ public class FormulaController {
 
 	@Autowired
 	private FormaFarmaceuticaRepository formaFarmaceticaRepository;
+	
+	final int QUANTIDADE_ITENS_PAGINA = 20;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/cadastroformula")
 	public ModelAndView inicio() {
@@ -145,7 +147,7 @@ public class FormulaController {
 
 		formulaRepository.deleteById(idform);
 		ModelAndView model = new ModelAndView("/listaformula");
-		model.addObject("formulas", formulaRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+		model.addObject("formulas", formulaRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
 		model.addObject("msgExclusao", msgExclusao);
 		model.addObject("formulaobj", new Formula());
 
@@ -173,17 +175,17 @@ public class FormulaController {
 	public ModelAndView formulas() {
 
 		ModelAndView modelAndView = new ModelAndView("/listaformula");
-		modelAndView.addObject("formulas", formulaRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+		modelAndView.addObject("formulas", formulaRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
 
 		return modelAndView;
 
 	}
 
 	@GetMapping("/formulapage")
-	public ModelAndView carregaFormulaPorPaginacao(@PageableDefault(size = 5) Pageable pageable, ModelAndView model) {
+	public ModelAndView carregaFormulaPorPaginacao(@PageableDefault(size = QUANTIDADE_ITENS_PAGINA) Pageable pageable, ModelAndView model) {
 
 		Page<Formula> pageFormula = formulaRepository
-				.findAll(PageRequest.of(pageable.getPageNumber(), 5, Sort.by("nome")));
+				.findAll(PageRequest.of(pageable.getPageNumber(), QUANTIDADE_ITENS_PAGINA, Sort.by("nome")));
 		model.addObject("formulas", pageFormula);
 		model.setViewName("/listaformula");
 
