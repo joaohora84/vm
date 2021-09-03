@@ -29,6 +29,8 @@ import com.vm.service.ServiceRelatorio;
 
 @Controller
 public class PrescritorController {
+	
+	final int QUANTIDADE_ITENS_PAGINA = 20;
 
 	@Autowired
 	private PrescritorRepository prescritorRepository;
@@ -157,13 +159,13 @@ public class PrescritorController {
 
 			prescritorRepository.deleteById(idpres);
 
-			model.addObject("prescritores", prescritorRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+			model.addObject("prescritores", prescritorRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
 			model.addObject("msgExclusao", "Prescritor excluido com sucesso!");
 			model.addObject("prescritorobj", new Prescritor());
 
 		} catch (Exception e) {
 
-			model.addObject("prescritores", prescritorRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+			model.addObject("prescritores", prescritorRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
 			model.addObject("msgErro", e.getCause().getCause().getMessage());
 
 		}
@@ -174,7 +176,7 @@ public class PrescritorController {
 
 	@PostMapping("**/pesquisarprescritor")
 	public ModelAndView pesquisar(@RequestParam("nome") String nome,
-			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable) {
+			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA, sort = { "nome" }) Pageable pageable) {
 
 		Page<Prescritor> prescritores = null;
 
@@ -192,17 +194,17 @@ public class PrescritorController {
 	public ModelAndView prescritores() {
 
 		ModelAndView modelAndView = new ModelAndView("/listaprescritor");
-		modelAndView.addObject("prescritores", prescritorRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+		modelAndView.addObject("prescritores", prescritorRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
 		return modelAndView;
 
 	}
 
 	@GetMapping("/prescritorpage")
-	public ModelAndView carregaPrescritorPorPaginacao(@PageableDefault(size = 5) Pageable pageable,
+	public ModelAndView carregaPrescritorPorPaginacao(@PageableDefault(size = QUANTIDADE_ITENS_PAGINA) Pageable pageable,
 			ModelAndView model) {
 
 		Page<Prescritor> pagePrescritor = prescritorRepository
-				.findAll(PageRequest.of(pageable.getPageNumber(), 5, Sort.by("nome")));
+				.findAll(PageRequest.of(pageable.getPageNumber(), QUANTIDADE_ITENS_PAGINA, Sort.by("nome")));
 		model.addObject("prescritores", pagePrescritor);
 		model.setViewName("/listaprescritor");
 

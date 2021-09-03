@@ -113,8 +113,8 @@
 
 							<th:ul class="pagination blue-text" th:each="i: ${#numbers.sequence(0, prescritores.totalPages -1)}">
 
-								<li class="waves-effect">
-									<a	th:href="@{/prescritorpage(page=${i}, size=${prescritores.size})}">[[${i} + 1]]</a>
+								<li class="waves-effect" th:class="${i+1==prescritores.number+1} ? active">
+									<a	th:href="@{/prescritorpage(page=${i}, size=${prescritores.size})}" th:text="${i} + 1"></a>
 								</li>
 
 							</th:ul>
