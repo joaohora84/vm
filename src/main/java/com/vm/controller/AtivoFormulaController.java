@@ -35,8 +35,9 @@ public class AtivoFormulaController {
 	
 	@Autowired
 	private UnidadeMedidaRepository unidadeRepository;
-
 	
+	final int QUANTIDADE_ITENS_PAGINA = 20;
+
 	
 	@GetMapping("/cadastroativoformula/{idform}")
 	public ModelAndView inicio(@PathVariable("idform") Long idform) {
@@ -57,7 +58,7 @@ public class AtivoFormulaController {
 	
 	@PostMapping("/buscarativoformula/{idform}")
 	public ModelAndView pesquisarAtivo(@PathVariable("idform") Long idform, @RequestParam("nome") String nome,
-			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable) {
+			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA, sort = { "nome" }) Pageable pageable) {
 		
 			ModelAndView model = new ModelAndView("/cadastroativoformula");
 		

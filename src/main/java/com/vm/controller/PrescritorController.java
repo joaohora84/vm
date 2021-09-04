@@ -1,6 +1,7 @@
 package com.vm.controller;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +30,11 @@ import com.vm.service.ServiceRelatorio;
 
 @Controller
 public class PrescritorController {
-	
+
 	final int QUANTIDADE_ITENS_PAGINA = 20;
 
 	@Autowired
-	private PrescritorRepository prescritorRepository;
+	public PrescritorRepository prescritorRepository;
 
 	@Autowired
 	private PerfilPrescritorRepository perfilPrescritorRepository;
@@ -43,7 +44,7 @@ public class PrescritorController {
 
 	@Autowired
 	private ClinicaRepository clinicaRepository;
-	
+
 	private SecretariaRepository secretariaRepository;
 
 	@Autowired
@@ -67,16 +68,14 @@ public class PrescritorController {
 
 	@RequestMapping(method = RequestMethod.POST, value = "**/salvarprescritor")
 	public ModelAndView salvar(Prescritor prescritor, PerfilPrescritor pp) {
-		
-		//prescritor.setSecretaria(secretariaRepository.getSecretariaPrescritor(prescritor.getIdprescritor()));
-		
-		
+
+		// prescritor.setSecretaria(secretariaRepository.getSecretariaPrescritor(prescritor.getIdprescritor()));
+
 		ModelAndView model = new ModelAndView("/cadastroprescritor");
-		
+
 		System.out.println(prescritor.toString());
 
 		try {
-			
 
 			Date data = new Date(System.currentTimeMillis());
 
@@ -98,7 +97,6 @@ public class PrescritorController {
 
 				prescritorRepository.save(prescritor);
 
-				
 				pp.setPrescritor(prescritor);
 
 				perfilPrescritorRepository.save(pp);
@@ -107,30 +105,24 @@ public class PrescritorController {
 
 			String msgSucesso = "Prescritor salvo com sucesso!";
 
-			
 			model.addObject("especialidades", especialidadePrescritorRepository.findAll());
 			model.addObject("clinicas", clinicaRepository.findAll());
 			model.addObject("prescritorobj", prescritor);
 			model.addObject("msgSucesso", msgSucesso);
 			model.addObject("perfilobj", pp);
 
-			
-
 		} catch (Exception e) {
 
-			//String msgErro = e.getCause().getCause().getMessage();
+			// String msgErro = e.getCause().getCause().getMessage();
 
-			
-			model.addObject("especialidades", especialidadePrescritorRepository.findAll());
+			model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
 			model.addObject("clinicas", clinicaRepository.findAll());
 			model.addObject("prescritorobj", new Prescritor());
 			model.addObject("msgErro", e.getMessage());
 			model.addObject("perfilobj", pp);
 
-			
-
 		}
-		
+
 		return model;
 
 	}
@@ -142,7 +134,7 @@ public class PrescritorController {
 
 		Optional<Prescritor> prescritor = prescritorRepository.findById(idpres);
 
-		model.addObject("especialidades", especialidadePrescritorRepository.findAll());
+		model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
 		model.addObject("clinicas", clinicaRepository.findAll());
 		model.addObject("prescritorobj", prescritor.get());
 
@@ -159,14 +151,20 @@ public class PrescritorController {
 
 			prescritorRepository.deleteById(idpres);
 
-			model.addObject("prescritores", prescritorRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
+			model.addObject("prescritores",
+					prescritorRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
 			model.addObject("msgExclusao", "Prescritor excluido com sucesso!");
+			model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
+			model.addObject("clinicas", clinicaRepository.findAll());
 			model.addObject("prescritorobj", new Prescritor());
 
 		} catch (Exception e) {
 
-			model.addObject("prescritores", prescritorRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
+			model.addObject("prescritores",
+					prescritorRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
 			model.addObject("msgErro", e.getCause().getCause().getMessage());
+			model.addObject("clinicas", clinicaRepository.findAll());
+			model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
 
 		}
 
@@ -184,6 +182,8 @@ public class PrescritorController {
 
 		ModelAndView model = new ModelAndView("/listaprescritor");
 		model.addObject("prescritores", prescritores);
+		model.addObject("clinicas", clinicaRepository.findAll());
+		model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
 		model.addObject("prescritorobj", new Prescritor());
 
 		return model;
@@ -194,18 +194,23 @@ public class PrescritorController {
 	public ModelAndView prescritores() {
 
 		ModelAndView modelAndView = new ModelAndView("/listaprescritor");
-		modelAndView.addObject("prescritores", prescritorRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
+		modelAndView.addObject("prescritores",
+				prescritorRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
+		modelAndView.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
+		modelAndView.addObject("clinicas", clinicaRepository.findAll());
 		return modelAndView;
 
 	}
 
 	@GetMapping("/prescritorpage")
-	public ModelAndView carregaPrescritorPorPaginacao(@PageableDefault(size = QUANTIDADE_ITENS_PAGINA) Pageable pageable,
-			ModelAndView model) {
+	public ModelAndView carregaPrescritorPorPaginacao(
+			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA) Pageable pageable, ModelAndView model) {
 
 		Page<Prescritor> pagePrescritor = prescritorRepository
 				.findAll(PageRequest.of(pageable.getPageNumber(), QUANTIDADE_ITENS_PAGINA, Sort.by("nome")));
 		model.addObject("prescritores", pagePrescritor);
+		model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
+		model.addObject("clinicas", clinicaRepository.findAll());
 		model.setViewName("/listaprescritor");
 
 		return model;
@@ -223,6 +228,8 @@ public class PrescritorController {
 
 		ModelAndView model = new ModelAndView("/cadastroprescritor");
 		model.addObject("prescritorobj", prescritor);
+		model.addObject("clinicas", clinicaRepository.findAll());
+		model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
 
 		return model;
 	}
@@ -237,9 +244,22 @@ public class PrescritorController {
 
 		model.addObject("prescritorobj", prescritor.get());
 		model.addObject("perfilobj", perfil);
+		model.addObject("clinicas", clinicaRepository.findAll());
+		model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
 
 		return model;
 
+	}
+	
+	@GetMapping("/buscaMistaPrescritor")
+	public void buscaPrescritorMista() {
+		
+		List<Prescritor> p = null;
+		
+		p = prescritorRepository.getPrescritorMista(null, null, null, null);
+		
+		System.out.println(p.toString());
+		
 	}
 
 }

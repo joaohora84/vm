@@ -172,7 +172,7 @@
 							<th:ul class="pagination blue-text" th:each="i: ${#numbers.sequence(0, ativos.totalPages -1)}">
 
 								<li class="waves-effect" th:class="${i+1==ativos.number+1} ? active">
-									<a	th:href="@{/ativopagecatalogo(page=${i}, size=${ativos.size}, nomepesquisa=${nomepesquisa}, especialidade=${especialidade})}">[[${i} + 1]]</a>
+									<a	th:href="@{/ativopagecatalogo(page=${i}, size=${ativos.size}, nomepesquisa=${nomepesquisa}, especialidade=${especialidade})}" th:text="${i} + 1"></a>
 								</li>
 
 							</th:ul>

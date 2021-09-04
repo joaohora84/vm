@@ -34,6 +34,8 @@ import com.vm.repository.PrescritorRepository;
 @Controller
 public class PrescricaoController {
 	
+	final int QUANTIDADE_ITENS_PAGINA = 20;
+	
 	@SuppressWarnings("unused")
 	@Autowired
 	private PrescricaoRepository prescricaoRepository;
@@ -130,7 +132,7 @@ public class PrescricaoController {
 		prescricaoRepository.deleteById(idpres);
 
 		ModelAndView model = new ModelAndView("/listaprescricao");
-		model.addObject("prescricoes", prescricaoRepository.findAll(PageRequest.of(0, 5)));
+		model.addObject("prescricoes", prescricaoRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA)));
 		model.addObject("msgExclusao", "Prescrição removida com sucesso.");
 		model.addObject("prescritores", prescritorRepository.findAll());
 		model.addObject("formulasprescricao", formulaPrescricaoRepository.getFormulaPrescricaoPorPrescricao(idpres));
@@ -141,7 +143,7 @@ public class PrescricaoController {
 
 	@PostMapping("**/pesquisarprescricao")
 	public ModelAndView pesquisar(@RequestParam("prescritor") Long prescritor,
-			@PageableDefault(size = 5) Pageable pageable) {
+			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA) Pageable pageable) {
 
 		Page<Prescricao> prescricoes = null;
 
@@ -155,7 +157,7 @@ public class PrescricaoController {
 
 			} else {
 
-				prescricoes = prescricaoRepository.findAll(PageRequest.of(0, 5));
+				prescricoes = prescricaoRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA));
 
 			}
 
@@ -164,7 +166,7 @@ public class PrescricaoController {
 
 		} catch (Exception e) {
 
-			model.addObject("prescricoes", prescricoes = prescricaoRepository.findAll(PageRequest.of(0, 5)));
+			model.addObject("prescricoes", prescricoes = prescricaoRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA)));
 			model.addObject("prescritores", prescritorRepository.findAll());
 			model.addObject("msgErro", e.getCause().getCause().getMessage());
 
@@ -178,7 +180,7 @@ public class PrescricaoController {
 	public ModelAndView prescricoes() {
 
 		ModelAndView model = new ModelAndView("/listaprescricao");
-		model.addObject("prescricoes", prescricaoRepository.findAll(PageRequest.of(0, 5)));
+		model.addObject("prescricoes", prescricaoRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA)));
 		model.addObject("prescritores", prescritorRepository.findAll());
 		return model;
 
@@ -188,7 +190,7 @@ public class PrescricaoController {
 	public ModelAndView carregaPrescricaoPorPaginacao(@PageableDefault(size = 5) Pageable pageable,
 			ModelAndView model) {
 
-		Page<Prescricao> pagePrescricao = prescricaoRepository.findAll(PageRequest.of(pageable.getPageNumber(), 5));
+		Page<Prescricao> pagePrescricao = prescricaoRepository.findAll(PageRequest.of(pageable.getPageNumber(), QUANTIDADE_ITENS_PAGINA));
 		model.addObject("prescricoes", pagePrescricao);
 		model.setViewName("/listaprescricao");
 
@@ -198,7 +200,7 @@ public class PrescricaoController {
 	
 	@PostMapping("/buscarformula/{idpres}")
 	public ModelAndView pesquisarFormula(@PathVariable("idpres") Long idpres, @RequestParam("nome") String nome,
-			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable) {
+			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA, sort = { "nome" }) Pageable pageable) {
 		
 		ModelAndView model = new ModelAndView("/cadastroprescricao");
 		

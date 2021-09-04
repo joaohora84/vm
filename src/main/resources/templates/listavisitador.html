@@ -102,13 +102,13 @@
 
 							<th:ul class="pagination blue-text" th:each="i: ${#numbers.sequence(0, visitadores.totalPages -1)}">
 
-								<li class="waves-effect">
-									<a	th:href="@{/visitadorpage(page=${i}, size=${visitadores.size})}">[[${i} + 1]]</a>
+								<li class="waves-effect" th:class="${i+1==visitadores.number+1} ? active">
+									<a	th:href="@{/visitadorpage(page=${i}, size=${visitadores.size})}" th:text="${i} + 1"></a>
 								</li>
 
 							</th:ul>
-							<span th:if="${visitadores.hasNext()}"> <a
-								th:href="@{/visitadorpage(page=${visitadores.number+1}, size=${visitadores.size})}"><i
+							<span th:if="${visitadores.hasNext()}"> 
+								<a th:href="@{/visitadorpage(page=${visitadores.number+1}, size=${visitadores.size})}"><i
 									class="small material-icons">chevron_right</i></a>
 							</span>
 

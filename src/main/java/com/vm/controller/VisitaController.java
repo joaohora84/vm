@@ -46,6 +46,8 @@ public class VisitaController {
 
 	@Autowired
 	private AtivoVisitaRepository ativoVisitaRepository;
+	
+	final int QTD_PAGINAS = 20;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/cadastrovisita")
 	public ModelAndView inicio() {
@@ -170,7 +172,7 @@ public class VisitaController {
 
 			visitaRepository.deleteById(idvi);
 
-			model.addObject("visitas", visitaRepository.findAll(PageRequest.of(0, 5)));
+			model.addObject("visitas", visitaRepository.findAll(PageRequest.of(0, QTD_PAGINAS)));
 			model.addObject("prescritores", prescritorRepository.findAll());
 			model.addObject("msgExclusao", "Visita removida com sucesso!");
 			model.addObject("visitaobj", new Visita());
@@ -179,7 +181,7 @@ public class VisitaController {
 
 		} catch (Exception e) {
 
-			model.addObject("visitas", visitaRepository.findAll(PageRequest.of(0, 5)));
+			model.addObject("visitas", visitaRepository.findAll(PageRequest.of(0, QTD_PAGINAS)));
 			model.addObject("prescritores", prescritorRepository.findAll());
 			model.addObject("msgErro", e.getCause().getCause().getMessage());
 			model.addObject("visitaobj", new Visita());
@@ -234,7 +236,7 @@ public class VisitaController {
 
 	@PostMapping("/buscarativo/{idvi}")
 	public ModelAndView pesquisarAtivo(@PathVariable("idvi") Long idvi, @RequestParam("nome") String nome,
-			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable) {
+			@PageableDefault(size = QTD_PAGINAS, sort = { "nome" }) Pageable pageable) {
 
 		Page<Ativo> ativos = null;
 
@@ -311,7 +313,7 @@ public class VisitaController {
 	
 	@PostMapping("**/pesquisarvisita")
 	public ModelAndView pesquisar(@RequestParam("prescritor") Long prescritor,
-			@RequestParam("statusvisita") StatusVisita statusvisita, @PageableDefault(size = 5) Pageable pageable) {
+			@RequestParam("statusvisita") StatusVisita statusvisita, @PageableDefault(size = QTD_PAGINAS) Pageable pageable) {
 
 		ModelAndView model = new ModelAndView("/listavisita");
 
@@ -347,7 +349,7 @@ public class VisitaController {
 	public ModelAndView listarvisitas() {
 
 		ModelAndView model = new ModelAndView("/listavisita");
-		model.addObject("visitas", visitaRepository.findAll(PageRequest.of(0, 5)));
+		model.addObject("visitas", visitaRepository.findAll(PageRequest.of(0, QTD_PAGINAS)));
 		model.addObject("prescritores", prescritorRepository.findAll());
 		model.addObject("ativosvisita", ativoVisitaRepository.findAll());
 		
@@ -356,7 +358,7 @@ public class VisitaController {
 	}
 
 	@GetMapping("/visitapage")
-	public ModelAndView carregaVisitaPorPaginacao(@PageableDefault(size = 5) Pageable pageable, ModelAndView model) {
+	public ModelAndView carregaVisitaPorPaginacao(@PageableDefault(size = QTD_PAGINAS) Pageable pageable, ModelAndView model) {
 
 		Page<Visita> pageVisita = visitaRepository.findAll(PageRequest.of(pageable.getPageNumber(), 5));
 		model.addObject("visitas", pageVisita);
@@ -380,14 +382,14 @@ public class VisitaController {
 			
 			visitaRepository.save(visita.get());
 			
-			model.addObject("visitas", visitaRepository.findAll(PageRequest.of(0, 5)));
+			model.addObject("visitas", visitaRepository.findAll(PageRequest.of(0, QTD_PAGINAS)));
 			model.addObject("prescritores", prescritorRepository.findAll());
 			model.addObject("ativosvisita", ativoVisitaRepository.findAll());
 			model.addObject("msgConclusao", "Visita código: " + idvi + "Concluida com sucesso."); 
 			
 		} catch (Exception e) {
 			
-			model.addObject("visitas", visitaRepository.findAll(PageRequest.of(0, 5)));
+			model.addObject("visitas", visitaRepository.findAll(PageRequest.of(0, QTD_PAGINAS)));
 			model.addObject("prescritores", prescritorRepository.findAll());
 			model.addObject("ativosvisita", ativoVisitaRepository.findAll());
 			model.addObject("msgErro", e.getCause().getCause().getMessage());

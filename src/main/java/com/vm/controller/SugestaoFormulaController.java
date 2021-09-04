@@ -41,6 +41,8 @@ public class SugestaoFormulaController {
 	@Autowired
 	private VisitaRepository visitaRepository;
 	
+	final int QTD_PAGINAS = 20;
+	
 	@GetMapping("/susgestaoformula/{idat}")
 	public ModelAndView sugestaoFormula(@PathVariable("idat") Long idat) {
 		

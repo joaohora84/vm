@@ -100,7 +100,7 @@
 							<th:ul class="pagination blue-text" th:each="i: ${#numbers.sequence(0, formulas.totalPages -1)}">
 
 								<li class="waves-effect" th:class="${i+1==formulas.number+1} ? active">
-									<a	th:href="@{/formulapage(page=${i}, size=${formulas.size})}">[[${i} + 1]]</a>
+									<a	th:href="@{/formulapage(page=${i}, size=${formulas.size})}" th:text="${i} + 1"></a>
 								</li>
 
 							</th:ul>

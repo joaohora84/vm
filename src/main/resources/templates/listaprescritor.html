@@ -33,6 +33,57 @@
 								data-tooltip="Cadastrar Usuário" href="/cadastroprescritor"><i
 								class="small material-icons green-text">add_box</i></a>
 						</div>
+						<form action="pesquisarativo" method="post">
+							<h6>Filtros</h6>
+							<div class="row">
+								<div class="input-field col s12 m4">
+									<input id="nome" type="text"
+										class="validate"> <label for="nome">Nome</label>
+								</div>
+								<div class="input-field col s12 m4">
+									<input id="numero_conselho" type="text"
+										class="validate"> <label for="numero_conselho">Número conselho</label>
+								</div>
+								<div class="input-field col s12 m4">
+									<select id="especialidade" name="especialidade">
+										<option value="" >Especialidade</option>
+										<option th:each="e : ${especialidades}"
+											th:value="${e.idespecialidade}" th:text="${e.nome}"></option>
+									</select>
+								</div>
+								</div>
+								<div class="row">
+									<div class="input-field col s12 m4">
+									<select id="clinica" name="clinica">
+										<option value="">Clínica</option>
+										<option th:each="c : ${clinicas}" th:value="${c.idclinica}" th:text="${c.nome}"></option>
+									</select>
+								</div>
+								<div class="input-field col s12 m4">
+
+									<select id="nomepesquisa" name="nomepesquisa">
+										<option value="" >Conselho</option>
+										<option value="CRM">CRM</option>
+										<option value="CRO">CRO</option>
+										<option value="CRN">CRN</option>
+										<option value="COREN">COREN</option>
+										<option value="${nomepesquisa} ? ${nomepesquisa} : ''" ></option>
+										
+									</select>
+
+								</div>
+								<div class="input-field">
+									<button class="btn waves-effect waves-light col s12 m3" type="submit" name="action">
+										Buscar <i class="material-icons right">search</i>
+
+									</button>
+								</div>
+								</div>
+								
+
+							
+						</form>
+						<!--  
 						<h6>Buscar por nome</h6>
 						<div class="row">
 							<div class="search-wrapper">
@@ -51,8 +102,12 @@
 							</div>
 
 						</div>
+						-->
+						
+						
 
 					</div>
+					
 
 					<div class="card grey lighten-4" style="padding: 20px 20px 20px 20px">
 					
@@ -98,6 +153,7 @@
 								            th:href="@{/removerprescritor/{idpres}(idpres=${prescritor.idprescritor})}" >
 											<i class="material-icons center red-text">delete</i>
 									</a>
+									
 									</td>
 								</tr>
 

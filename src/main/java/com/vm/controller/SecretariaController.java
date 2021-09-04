@@ -40,6 +40,8 @@ public class SecretariaController {
 	@Autowired
 	private PerfilSecretariaRepository perfilSecretariaRepository;
 	
+	final int QTD_PAGINAS = 20;
+	
 		
 	@RequestMapping(method = RequestMethod.GET, value = "/cadastrosecretaria")
 	public ModelAndView inicio() {
@@ -126,7 +128,7 @@ public class SecretariaController {
 		secretariaRepository.deleteById(idsec);
 
 		ModelAndView model = new ModelAndView("/listasecretaria");
-		model.addObject("secretarias", secretariaRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+		model.addObject("secretarias", secretariaRepository.findAll(PageRequest.of(0, QTD_PAGINAS, Sort.by("nome"))));
 		model.addObject("msgExclusao", "Secretária removida com sucesso.");
 
 		return model;
@@ -135,7 +137,7 @@ public class SecretariaController {
 
 	@PostMapping("**/pesquisarsecretaria")
 	public ModelAndView pesquisar(@RequestParam("nome") String nome,
-			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable) {
+			@PageableDefault(size = QTD_PAGINAS, sort = { "nome" }) Pageable pageable) {
 		
 		Page<Secretaria> secretarias = null;
 
@@ -153,13 +155,13 @@ public class SecretariaController {
 	public ModelAndView secretarias() {
 
 		ModelAndView model = new ModelAndView("/listasecretaria");
-		model.addObject("secretarias", secretariaRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+		model.addObject("secretarias", secretariaRepository.findAll(PageRequest.of(0, QTD_PAGINAS, Sort.by("nome"))));
 		return model;
 
 	}
 
 	@GetMapping("/secretariapage")
-	public ModelAndView carregaSecretariaPorPaginacao(@PageableDefault(size = 5) Pageable pageable,
+	public ModelAndView carregaSecretariaPorPaginacao(@PageableDefault(size = QTD_PAGINAS) Pageable pageable,
 			ModelAndView model) {
 
 		Page<Secretaria> pageSecretaria = secretariaRepository.findAll(PageRequest.of(pageable.getPageNumber(), 5, Sort.by("nome")));

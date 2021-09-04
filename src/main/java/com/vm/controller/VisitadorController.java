@@ -26,6 +26,8 @@ public class VisitadorController {
 
 	@Autowired
 	private VisitadorRepository visitadorRepository;
+	
+	final int QTD_PAGINAS = 20;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/cadastrovisitador")
 	public ModelAndView inicio() {
@@ -94,7 +96,7 @@ public class VisitadorController {
 		visitadorRepository.deleteById(idv);
 		
 		ModelAndView model = new ModelAndView("/listavisitador");
-		model.addObject("visitadores", visitadorRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+		model.addObject("visitadores", visitadorRepository.findAll(PageRequest.of(0, QTD_PAGINAS, Sort.by("nome"))));
 		model.addObject("msgExclusao", "Visitador excluido com sucesso!");
 		model.addObject("visitadorobj", new Visitador());
 
@@ -104,7 +106,7 @@ public class VisitadorController {
 
 	@PostMapping("**/pesquisarvisitador")
 	public ModelAndView pesquisar(@RequestParam("nome") String nome,
-			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable) {
+			@PageableDefault(size = QTD_PAGINAS, sort = { "nome" }) Pageable pageable) {
 
 		Page<Visitador> visitadores = null;
 
@@ -122,17 +124,17 @@ public class VisitadorController {
 	public ModelAndView visitadores() {
 
 		ModelAndView modelAndView = new ModelAndView("/listavisitador");
-		modelAndView.addObject("visitadores", visitadorRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+		modelAndView.addObject("visitadores", visitadorRepository.findAll(PageRequest.of(0, QTD_PAGINAS, Sort.by("nome"))));
 		return modelAndView;
 
 	}
 
 	@GetMapping("/visitadorpage")
-	public ModelAndView carregaPrescritorPorPaginacao(@PageableDefault(size = 5) Pageable pageable,
+	public ModelAndView carregaPrescritorPorPaginacao(@PageableDefault(size = QTD_PAGINAS) Pageable pageable,
 			ModelAndView model) {
 
 		Page<Visitador> pageVisitador = visitadorRepository
-				.findAll(PageRequest.of(pageable.getPageNumber(), 5, Sort.by("nome")));
+				.findAll(PageRequest.of(pageable.getPageNumber(), QTD_PAGINAS, Sort.by("nome")));
 		model.addObject("visitadores", pageVisitador);
 		model.setViewName("/listavisitador");
 

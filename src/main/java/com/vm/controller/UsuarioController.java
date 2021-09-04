@@ -38,6 +38,8 @@ public class UsuarioController {
 	
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	final int QTD_PAGINAS = 20;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/cadastrousuario")
 	public ModelAndView inicio() {
@@ -161,7 +163,7 @@ public class UsuarioController {
 		String msgExclusao = "Usuário excluido com sucesso!";
 		
 		ModelAndView model = new ModelAndView("/listausuario");
-		model.addObject("usuarios", usuarioRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+		model.addObject("usuarios", usuarioRepository.findAll(PageRequest.of(0, QTD_PAGINAS, Sort.by("nome"))));
 		model.addObject("msgExclusao", msgExclusao);
 		model.addObject("usuarioobj", new Usuario());
 		
@@ -174,7 +176,7 @@ public class UsuarioController {
 
 	@PostMapping("**/pesquisarusuario")
 	public ModelAndView pesquisar(@RequestParam("nome") String nome,
-			@PageableDefault(size = 5, sort = { "nome" }) Pageable pageable) {
+			@PageableDefault(size = QTD_PAGINAS, sort = { "nome" }) Pageable pageable) {
 
 		Page<Usuario> usuarios = null;
 
@@ -194,14 +196,14 @@ public class UsuarioController {
 	public ModelAndView usuarios() {
 
 		ModelAndView model = new ModelAndView("/listausuario");
-		model.addObject("usuarios", usuarioRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+		model.addObject("usuarios", usuarioRepository.findAll(PageRequest.of(0, QTD_PAGINAS, Sort.by("nome"))));
 		
 		return model;
 
 	}
 
 	@GetMapping("/usuariopage")
-	public ModelAndView carregaUsuarioPorPaginacao(@PageableDefault(size = 5) Pageable pageable, ModelAndView model) {
+	public ModelAndView carregaUsuarioPorPaginacao(@PageableDefault(size = QTD_PAGINAS) Pageable pageable, ModelAndView model) {
 
 		Page<Usuario> pageUsuario = usuarioRepository
 				.findAll(PageRequest.of(pageable.getPageNumber(), 5, Sort.by("nome")));
@@ -229,7 +231,7 @@ public class UsuarioController {
 		enviaEmail.enviarEmail();
 		
 		model.addObject("msgExclusao", "Email enviado com sucesso!");
-		model.addObject("usuarios", usuarioRepository.findAll(PageRequest.of(0, 5, Sort.by("nome"))));
+		model.addObject("usuarios", usuarioRepository.findAll(PageRequest.of(0, QTD_PAGINAS, Sort.by("nome"))));
 		return model;
 		
 	}
