@@ -1,7 +1,6 @@
 package com.vm.controller;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.vm.model.Ativo;
 import com.vm.model.PerfilPrescritor;
 import com.vm.model.Prescritor;
 import com.vm.repository.ClinicaRepository;
@@ -106,7 +106,7 @@ public class PrescritorController {
 			String msgSucesso = "Prescritor salvo com sucesso!";
 
 			model.addObject("especialidades", especialidadePrescritorRepository.findAll());
-			model.addObject("clinicas", clinicaRepository.findAll());
+			model.addObject("clinicas", clinicaRepository.findAll(Sort.by("nome")));
 			model.addObject("prescritorobj", prescritor);
 			model.addObject("msgSucesso", msgSucesso);
 			model.addObject("perfilobj", pp);
@@ -116,7 +116,7 @@ public class PrescritorController {
 			// String msgErro = e.getCause().getCause().getMessage();
 
 			model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
-			model.addObject("clinicas", clinicaRepository.findAll());
+			model.addObject("clinicas", clinicaRepository.findAll(Sort.by("nome")));
 			model.addObject("prescritorobj", new Prescritor());
 			model.addObject("msgErro", e.getMessage());
 			model.addObject("perfilobj", pp);
@@ -135,7 +135,7 @@ public class PrescritorController {
 		Optional<Prescritor> prescritor = prescritorRepository.findById(idpres);
 
 		model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
-		model.addObject("clinicas", clinicaRepository.findAll());
+		model.addObject("clinicas", clinicaRepository.findAll(Sort.by("nome")));
 		model.addObject("prescritorobj", prescritor.get());
 
 		return model;
@@ -155,7 +155,7 @@ public class PrescritorController {
 					prescritorRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
 			model.addObject("msgExclusao", "Prescritor excluido com sucesso!");
 			model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
-			model.addObject("clinicas", clinicaRepository.findAll());
+			model.addObject("clinicas", clinicaRepository.findAll(Sort.by("nome")));
 			model.addObject("prescritorobj", new Prescritor());
 
 		} catch (Exception e) {
@@ -163,7 +163,7 @@ public class PrescritorController {
 			model.addObject("prescritores",
 					prescritorRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
 			model.addObject("msgErro", e.getCause().getCause().getMessage());
-			model.addObject("clinicas", clinicaRepository.findAll());
+			model.addObject("clinicas", clinicaRepository.findAll(Sort.by("nome")));
 			model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
 
 		}
@@ -173,18 +173,35 @@ public class PrescritorController {
 	}
 
 	@PostMapping("**/pesquisarprescritor")
-	public ModelAndView pesquisar(@RequestParam("nome") String nome,
+	public ModelAndView pesquisar(@RequestParam("nome") String nome, @RequestParam("conselho") String conselho,
+			@RequestParam("numero_conselho") String numeroConselho, @RequestParam("especialidade") Long especialidadeid,
+			@RequestParam("clinica") Long clinicaid,
 			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA, sort = { "nome" }) Pageable pageable) {
 
 		Page<Prescritor> prescritores = null;
+		String msgErro = null;
 
-		prescritores = prescritorRepository.findPrescritorByNamePage(nome, pageable);
+		prescritores = prescritorRepository.getPrescritores(nome, conselho, numeroConselho, especialidadeid, clinicaid,
+				pageable);
+
+		if (prescritores.isEmpty()) {
+
+			msgErro = "Nenhum prescritor encontrado com os valores informados.";
+
+		}
 
 		ModelAndView model = new ModelAndView("/listaprescritor");
 		model.addObject("prescritores", prescritores);
-		model.addObject("clinicas", clinicaRepository.findAll());
+		model.addObject("clinicas", clinicaRepository.findAll(Sort.by("nome")));
+		model.addObject("msgErro", msgErro);
 		model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
 		model.addObject("prescritorobj", new Prescritor());
+		model.addObject("nome", nome);
+		model.addObject("conselho", conselho);
+		model.addObject("numeroConselho", numeroConselho);
+		model.addObject("especialidade", especialidadeid);
+		model.addObject("clinica", clinicaid);
+		model.addObject("conselho", conselho);
 
 		return model;
 
@@ -197,20 +214,69 @@ public class PrescritorController {
 		modelAndView.addObject("prescritores",
 				prescritorRepository.findAll(PageRequest.of(0, QUANTIDADE_ITENS_PAGINA, Sort.by("nome"))));
 		modelAndView.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
-		modelAndView.addObject("clinicas", clinicaRepository.findAll());
+		modelAndView.addObject("clinicas", clinicaRepository.findAll(Sort.by("nome")));
 		return modelAndView;
 
 	}
 
 	@GetMapping("/prescritorpage")
-	public ModelAndView carregaPrescritorPorPaginacao(
+	public ModelAndView carregaPrescritorPorPaginacao(@RequestParam("nome") String nome,
+			@RequestParam("conselho") String conselho, @RequestParam("numeroConselho") String numeroConselho,
+			@RequestParam("especialidade") Long especialidade, @RequestParam("clinica") Long clinica,
 			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA) Pageable pageable, ModelAndView model) {
+		
+		if (nome != "" || !nome.equals(null) 
+				|| conselho.equals("") || conselho.equals(null)
+				|| numeroConselho.equals("") || numeroConselho.equals(null)
+				|| !especialidade.equals("") || !especialidade.equals(null)
+				|| !clinica.equals("") || !clinica.equals(null)) {
+			
+			carregaAtivoPorPaginacaoPage(nome, conselho, numeroConselho, especialidade, clinica, pageable.getPageNumber(), pageable, model);
+			
+		} else {
+			
+			Page<Prescritor> pagePrescritor = prescritorRepository
+					.findAll(PageRequest.of(pageable.getPageNumber(), QUANTIDADE_ITENS_PAGINA, Sort.by("nome")));
+			model.addObject("prescritores", pagePrescritor);
+			model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
+			model.addObject("clinicas", clinicaRepository.findAll(Sort.by("nome")));
+			model.addObject("nome", nome);
+			model.addObject("conselho", conselho);
+			model.addObject("numeroConselho", numeroConselho);
+			model.addObject("especialidade", especialidade);
+			model.addObject("clinica", clinica);
+			model.addObject("conselho", conselho);
+			model.setViewName("/listaprescritor");
 
-		Page<Prescritor> pagePrescritor = prescritorRepository
-				.findAll(PageRequest.of(pageable.getPageNumber(), QUANTIDADE_ITENS_PAGINA, Sort.by("nome")));
-		model.addObject("prescritores", pagePrescritor);
-		model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
-		model.addObject("clinicas", clinicaRepository.findAll());
+			return model;
+			
+		}
+
+		return model;
+
+	}
+
+	@GetMapping("/prescritorpage/page/{page}")
+	public ModelAndView carregaAtivoPorPaginacaoPage(@RequestParam("nome") String nome,
+			@RequestParam("conselho") String conselho, @RequestParam("numeroConselho") String numeroConselho,
+			@RequestParam("especialidade") Long especialidade, @RequestParam("clinica") Long clinica,
+			@RequestParam("page") int pagina, @PageableDefault(size = QUANTIDADE_ITENS_PAGINA) Pageable pageable,
+			ModelAndView model) {
+
+		Page<Prescritor> prescritores = null;
+
+		prescritores = prescritorRepository.getPrescritores(nome, conselho, numeroConselho, especialidade, clinica,
+				PageRequest.of(pagina, QUANTIDADE_ITENS_PAGINA, Sort.by("nome")));
+
+		model.addObject("prescritores", prescritores);
+		model.addObject("especialidades", especialidadePrescritorRepository.findAll(Sort.by("nome")));
+		model.addObject("clinicas", clinicaRepository.findAll(Sort.by("nome")));
+		model.addObject("nome", nome);
+		model.addObject("conselho", conselho);
+		model.addObject("numeroConselho", numeroConselho);
+		model.addObject("especialidade", especialidade);
+		model.addObject("clinica", clinica);
+		model.addObject("conselho", conselho);
 		model.setViewName("/listaprescritor");
 
 		return model;
@@ -228,7 +294,7 @@ public class PrescritorController {
 
 		ModelAndView model = new ModelAndView("/cadastroprescritor");
 		model.addObject("prescritorobj", prescritor);
-		model.addObject("clinicas", clinicaRepository.findAll());
+		model.addObject("clinicas", clinicaRepository.findAll(Sort.by("nome")));
 		model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
 
 		return model;
@@ -244,22 +310,11 @@ public class PrescritorController {
 
 		model.addObject("prescritorobj", prescritor.get());
 		model.addObject("perfilobj", perfil);
-		model.addObject("clinicas", clinicaRepository.findAll());
+		model.addObject("clinicas", clinicaRepository.findAll(Sort.by("nome")));
 		model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
 
 		return model;
 
-	}
-	
-	@GetMapping("/buscaMistaPrescritor")
-	public void buscaPrescritorMista() {
-		
-		List<Prescritor> p = null;
-		
-		p = prescritorRepository.getPrescritorMista(null, null, null, null);
-		
-		System.out.println(p.toString());
-		
 	}
 
 }

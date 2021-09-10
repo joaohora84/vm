@@ -167,9 +167,6 @@ public class AtivoController {
 
 		Page<Ativo> ativos = null;
 		
-		System.out.println("ESPECIALIDADE: " + especialidade);
-		System.out.println("NOME: " + nomepesquisa);
-
 		if (especialidade != null) {
 
 			ativos = ativoRepository.getAtivoByEspecialidadeNome(especialidade, nomepesquisa, pageable);

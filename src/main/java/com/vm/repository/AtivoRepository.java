@@ -17,17 +17,6 @@ import com.vm.model.Ativo;
 @Transactional
 public interface AtivoRepository extends JpaRepository<Ativo, Long> {
 
-	/*
-	 * 
-	 * 
-	 * @Query("select a from Ativo a where a.especialidade.id= ?1") Page<Ativo>
-	 * getAtivoByEspecialidade(Long idespecialidade, Pageable pageable);
-	 * 
-	 * @Query("select a from Ativo a where a.especialidade.id = ?1 and lower(a.nome) like lower(concat(?2, '%'))"
-	 * ) Page<Ativo> getAtivoByEspecialidadeNome(long idespecialidade, String nome,
-	 * Pageable pageable);
-	 */
-
 	int limit = 2;
 
 	@Query("select a from Ativo a where lower(a.nome) like lower(concat(?1, '%'))")
@@ -44,13 +33,6 @@ public interface AtivoRepository extends JpaRepository<Ativo, Long> {
 			+ "	on a.idativo = e.ativo_idativo\n" + ""
 			+ "	where e.especialidades_idespecialidade = :idespecialidade", nativeQuery = true)
 	List<Ativo> getAtivoPorEspecialide(Long idespecialidade);
-
-	/*@Query(value = "select * from ativo as a\n" 
-	        + "	left join ativo_especialidades as e\n"
-			+ "	on a.idativo = e.ativo_idativo\n"
-	        + "	where e.especialidades_idespecialidade = :idespecialidade "
-			+ " and lower(a.nome) like lower(concat(:nome, '%'))", nativeQuery = true)
-	Page<Ativo> getAtivoByEspecialidadeNome(Long idespecialidade, String nome, Pageable pageable);*/
 	
 	@Query(value = "select * from ativo as a\n" 
 	        + "	left join ativo_especialidades as e\n"
