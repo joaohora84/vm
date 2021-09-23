@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.vm.model.EspecialidadePrescritor;
 import com.vm.model.Visitador;
 
 @Repository
@@ -19,6 +20,9 @@ public interface VisitadorRepository extends JpaRepository<Visitador, Long>{
 	
 	@Query("select v from Visitador v where v.nome like %?1%")
 	List<Visitador> findVisitadorByName(String nome);
+	
+	@Query("select v from Visitador v order by v.nome asc")
+	List<Visitador> findAllByOrderBy();
 	
 	default Page<Visitador> findVisitadorByNamePage(String nome, Pageable pageable) {
 		

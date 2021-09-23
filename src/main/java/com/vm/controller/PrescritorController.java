@@ -59,7 +59,7 @@ public class PrescritorController {
 		ModelAndView model = new ModelAndView("/cadastroprescritor");
 
 		model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
-		model.addObject("clinicas", clinicaRepository.findAll());
+		model.addObject("clinicas", clinicaRepository.findAllByOrderBy());
 		model.addObject("prescritorobj", new Prescritor());
 
 		return model;
@@ -105,7 +105,7 @@ public class PrescritorController {
 
 			String msgSucesso = "Prescritor salvo com sucesso!";
 
-			model.addObject("especialidades", especialidadePrescritorRepository.findAll());
+			model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
 			model.addObject("clinicas", clinicaRepository.findAll(Sort.by("nome")));
 			model.addObject("prescritorobj", prescritor);
 			model.addObject("msgSucesso", msgSucesso);

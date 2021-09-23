@@ -23,6 +23,9 @@ public interface PrescritorRepository extends JpaRepository<Prescritor, Long>, Q
 	
 	@Query("select p from Prescritor p where p.clinica.id = ?1")
 	List<Prescritor> getPrescritorClinica(Long clinica);
+	
+	@Query("select p from Prescritor p order by p.nome asc")
+	List<Prescritor> findAllByOrderBy();
 
 	default Page<Prescritor> findPrescritorByNamePage(String nome, Pageable pageable) {
 

@@ -55,8 +55,8 @@ public class VisitaController {
 		ModelAndView model = new ModelAndView("/cadastrovisita");
 
 		model.addObject("visitaobj", new Visita());
-		model.addObject("visitadores", visitadorRepository.findAll());
-		model.addObject("prescritores", prescritorRepository.findAll());
+		model.addObject("visitadores", visitadorRepository.findAllByOrderBy());
+		model.addObject("prescritores", prescritorRepository.findAllByOrderBy());
 
 		return model;
 
@@ -97,8 +97,8 @@ public class VisitaController {
 
 			model.addObject("visitaobj", visita);
 			model.addObject("msgSucesso", "Visita salva com sucesso!");
-			model.addObject("visitadores", visitadorRepository.findAll());
-			model.addObject("prescritores", prescritorRepository.findAll());
+			model.addObject("visitadores", visitadorRepository.findAllByOrderBy());
+			model.addObject("prescritores", prescritorRepository.findAllByOrderBy());
 			model.addObject("ativos", ativosPorEspecialidade);
 			model.addObject("ativosvisita", ativoVisitaRepository.getAtivoVisita(visita.getIdvisita()));
 
@@ -106,8 +106,8 @@ public class VisitaController {
 
 			model.addObject("visitaobj", new Visita());
 			model.addObject("msgErro", e.getMessage());
-			model.addObject("visitadores", visitadorRepository.findAll());
-			model.addObject("prescritores", prescritorRepository.findAll());
+			model.addObject("visitadores", visitadorRepository.findAllByOrderBy());
+			model.addObject("prescritores", prescritorRepository.findAllByOrderBy());
 			model.addObject("ativosvisita", ativoVisitaRepository.getAtivoVisita(visita.getIdvisita()));
 
 		}
@@ -139,8 +139,8 @@ public class VisitaController {
 			List<Ativo> ativosPorEspecialidade = ativoRepository.getAtivoPorEspecialide(especPrescritorVisita);
 
 			model.addObject("visitaobj", visita.get());
-			model.addObject("visitadores", visitadorRepository.findAll());
-			model.addObject("prescritores", prescritorRepository.findAll());
+			model.addObject("visitadores", visitadorRepository.findAllByOrderBy());
+			model.addObject("prescritores", prescritorRepository.findAllByOrderBy());
 			model.addObject("ativosvisita", ativoVisitaRepository.getAtivoVisita(idvi));
 			model.addObject("ativos", ativosPorEspecialidade);
 

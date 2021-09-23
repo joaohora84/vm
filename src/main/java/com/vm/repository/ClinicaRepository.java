@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.vm.model.Clinica;
+import com.vm.model.EspecialidadePrescritor;
 
 @Repository
 @Transactional
@@ -20,6 +21,9 @@ public interface ClinicaRepository extends JpaRepository<Clinica, Long>{
 	
 	@Query("select c from Clinica c where c.nome like %?1%")
 	List<Clinica> findClinicaByName(String nome);
+	
+	@Query("select c from Clinica c order by c.nome asc")
+	List<Clinica> findAllByOrderBy();
 	
 	default Page<Clinica> findClinicaByNamePage(String nome, Pageable pageable) {
 		
