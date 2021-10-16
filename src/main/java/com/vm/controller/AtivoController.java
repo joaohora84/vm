@@ -1,7 +1,9 @@
 package com.vm.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
@@ -247,9 +249,14 @@ public class AtivoController {
 	public ModelAndView ativosNovosCatalogo() {
 
 		ModelAndView model = new ModelAndView("/indexcatalogo");
-
-		model.addObject("ativos", ativoRepository.getAtivoNovo());
-		model.addObject("especialidades", epRepository.findAll());
+		
+		List<Ativo> ativos =  ativoRepository.getAtivoNovo();
+		
+		
+		
+		
+		model.addObject("ativos", ativos);
+		//model.addObject("especialidades", epRepository.findAll());
 
 		return model;
 

@@ -33,7 +33,7 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter{
 				"/cadastrovisitador", "/cadastrovisita", "/cadastroativo", "/cadastroativoformula", "/agenda", "/cadastrosecretaria", "/listarusuarios",
 				"/listarprescritores", "/listarativos", "/listarformulas", "/listarvisitadores", "/listarvisitas", "/listarprescritores", "/listarclinicas",
 				"/listarsecretarias", "/prescritor_relatorios", "/formula_relatorios", "/visitador_relatorios", "/visita_relatorios").hasRole("ADMIN")
-		.antMatchers(HttpMethod.GET, "/indexcatalogo", "/catalogoativos", "/catalogoativoscompleto").permitAll()
+		.antMatchers(HttpMethod.GET, "/indexcatalogo", "/catalogoativos", "/catalogoativoscompleto", "/cadastroespecialidade").permitAll()
 		.anyRequest().authenticated()
 		.and().
 		formLogin().

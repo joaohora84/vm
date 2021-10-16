@@ -19,7 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vm.model.Clinica;
+import com.vm.model.EspecialidadePrescritor;
+import com.vm.model.Prescritor;
 import com.vm.repository.ClinicaRepository;
+import com.vm.repository.EspecialidadePrescritorRepository;
 import com.vm.repository.PrescritorRepository;
 import com.vm.repository.SecretariaRepository;
 
@@ -36,6 +39,9 @@ public class ClinicaController {
 	@Autowired
 	private PrescritorRepository prescriorRepository;
 	
+	@Autowired
+	private EspecialidadePrescritorRepository epRepository;
+	
 	final int QUANTIDADE_ITENS_PAGINA = 20;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/cadastroclinica")
@@ -48,10 +54,34 @@ public class ClinicaController {
 
 	}
 	
+	@PostMapping("**/salvarclinicaprescritor")
+	public ModelAndView salvarClinicaPrescritor(Clinica clinica) {
+		
+		ModelAndView model = new ModelAndView("/cadastroprescritor");
+
+		Date data = new Date(System.currentTimeMillis());
+		
+		clinica.setData_cadastro(data);
+		
+		clinicaRepository.save(clinica);
+		
+		model.addObject("especialidades", epRepository.findAllByOrderBy());
+		model.addObject("clinicas", clinicaRepository.findAllByOrderBy());
+		model.addObject("prescritorobj", new Prescritor());
+		
+		return model;
+		
+		
+	}
+	
 	@PostMapping("**/salvarclinica")
 	public ModelAndView salvar(Clinica clinica) {
+		
+		
 
 		ModelAndView model = new ModelAndView("/cadastroclinica");
+		
+		
 
 		try {
 

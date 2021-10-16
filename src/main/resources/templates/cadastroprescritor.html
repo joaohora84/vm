@@ -94,7 +94,7 @@
 						<div class="row">
 							<input type="hidden" name="idprescritor" class="validade" th:field="*{idprescritor}" readonly="readonly">
 							<div class="input-field col s12 m6">
-								<input id="nome" type="text" name="nome" class="validate"
+								<input id="nome" type="text" name="nome" class="validate" required="required"
 									th:field="*{nome}"> <label for="nome">Nome</label>
 							</div>
 							<div class="input-field col s12 m3">
@@ -111,7 +111,7 @@
 						<div class="row">
 							
 							<div class="input-field col s12 m12">
-								<input id="email" type="email" name="email" class="validate"
+								<input id="email" type="email" name="email" class="validate" required="required"
 									th:field="*{email}"> <label for="email">Email</label>
 							</div>
 						</div>
@@ -186,12 +186,16 @@
 									<option th:each="c : ${clinicas}" th:value="${c.idclinica}" th:text="${c.nome}"></option>								
 								</select>
 								<label>Clínica</label>
+								<a href="#modal2" class="modal-trigger"><i class="material-icons teal-text" title="Cadastrar clínica">add</i></a>
+								
+								<!-- href="/cadastroclinica" target="_blank" -->
+								
 							</div>
 						</div>
 						<div class="row">
 							<div class="input-field col s12 m4">
 								
-								<select  id="conselho" name="conselho" th:field="*{conselho}">
+								<select  id="conselho" name="conselho" th:field="*{conselho}" required="required">
 									<option value="" disabled selected>Conselho</option>
 									<option value="CRM">CRM</option>
 									<option value="CRO">CRO</option>
@@ -202,15 +206,19 @@
 								
 							</div>
 							<div class="input-field col s12 m4">
-								<input id="numeroConselho" type=text name="numeroConselho" class="validate"
+								<input id="numeroConselho" type=text name="numeroConselho" class="validate" required="required"
 									th:field="*{numeroConselho}"> <label for="numeroConselho">Numero conselho</label>
 							</div>
 							<div class="input-field col s12 m4">
-								<select id="especialidade" name="especialidade" th:field="*{especialidade}">
+								<select id="especialidade" name="especialidade" th:field="*{especialidade}" required="required">
 									<option value="" disabled="disabled">Selecione</option>
 									<option th:each="e : ${especialidades}" th:value="${e.idespecialidade}" th:text="${e.nome}"></option>								
 								</select>
 								<label>Especialidade</label>
+								<a href="#modal1" class="modal-trigger" ><i class="material-icons teal-text" title="Cadastrar especialidade médica">add</i></a>
+								
+								
+
 							</div>
 							
 						</div>
@@ -220,7 +228,59 @@
 						</div>
 			
 			</div>
+
+			<!-- Modal Structure -->
+			<div id="modal1" class="modal">
 			
+				<div class="modal-content">
+					<h4>Cadastro Especialidade Médica</h4>
+					<p></p>
+					<div>
+						<form class="col s12" th:action="@{salvarespecialidade/{espec}(espec=espec)}" method="post">
+
+							<input placeholder="Especialidade" class="validate" id="espec" name="espec" required="required">
+							
+							<div class="right">
+								<button class="btn waves-effect waves-light" type="submit" name="action">Salvar</button>
+							</div>	
+						</form>
+
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					
+				</div>
+				
+			</div>
+			
+			<!-- Modal Structure -->
+			<div id="modal2" class="modal">
+			
+				<div class="modal-content">
+					<h4>Cadastro Clínica</h4>
+					<p></p>
+					<div>
+						<form class="col s12" action="/salvarclinicaprescritor" method="post">
+
+							<input placeholder="Nome" class="validate" id="nome" name="nome" required="required">
+							<input placeholder="CNPJ" class="validate" id="cnpj" name="cnpj">
+							
+							<div class="right">
+								<button class="btn waves-effect waves-light" type="submit" name="action">Salvar</button>
+							</div>	
+						</form>
+
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					
+				</div>
+				
+			</div>
+
+
 		</div>	
 			
 			<input type="hidden" id="msgSucesso" th:value="${msgSucesso}">
@@ -276,6 +336,8 @@
 			numeroConselho = document.getElementById('numeroConselho').value;
 			especialidade = document.getElementById('especialidade').value;
 			
+			espec = document.getElementyById('espec').value;
+			
 
 			if (nome === '') {
 
@@ -318,7 +380,7 @@
 				return false;
 				
 			}
-
+			
 			return true;
 
 		}
@@ -414,10 +476,76 @@
         });
 
     </script>
-    <script type="text/javascript">
-    $(document).ready(function(){
-        $('.tooltipped').tooltip();
-      });
-    </script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.tooltipped').tooltip();
+		});
+	</script>
+
+<!-- 
+
+	<script type="text/javascript">
+		window.onload = function() {
+
+			if (sessionStorage.getItem('nome') == "nome") {
+				return;
+			}
+
+			var nome = sessionStorage.getItem('nome');
+
+			if (nome !== null)
+				$('#nome').val(nome);
+
+			var email = sessionStorage.getItem('email');
+
+			if (email !== null)
+				$('#email').val(email);
+
+			var telefone1 = sessionStorage.getItem('telefone1');
+
+			if (telefone1 !== null)
+				$('#telefone1').val(telefone1);
+
+			var telefone2 = sessionStorate.getItem('telefone2');
+
+			if (telefone2 !== null)
+				$('#telefone2').val(telefone2);
+			
+			var cep = sessionStorage.getItem('cep');
+				
+			if (cep !== null)
+				$('#cep').val(cep);
+				
+
+		}
+
+		window.onbeforeunload = function() {
+			sessionStorage.setItem("nome", $('#nome').val());
+			sessionStorage.setItem("email", $('#email').val());
+			sessionStorage.setItem("telefone1", $('#telefone1').val());
+			sessionStorage.setItem("telefone2", $('#telefone2').val());
+			sessionStorage.setItem("cep", $('#cep').val());
+
+		}
+	</script> -->
+	
+	<script type="text/javascript">
+	
+	$(document).ready(function(){
+	    $('.modal').modal();
+	  });
+	
+	
+	</script>
+	
+	<script type="text/javascript">
+	
+    	if ( window.history.replaceState ) {
+        	window.history.replaceState( null, null, window.location.href );
+    	}
+
+	</script>
+	
+
 </body>
 </html>

@@ -126,6 +126,9 @@
 				</div>
 
 			</div>
+			
+			
+		
 		</header>
 	</div>
 	<main>
@@ -184,11 +187,11 @@
 								</div>
 								<div class="card-stacked">
 									<div class="card-content">
-										<h6 class="left-align" th:text="${a.nome}"></h6>
+										<h6 class="left-align" th:text="${#strings.replace(a.nome, '*', '')}"></h6>
 
 									</div>
 									<div class="card-action">
-										<p th:text="${a.indicacao}"
+										<p th:text="${#strings.replace(a.indicacao, '•', '')}"
 											style="font-size: 16px; color: #000000;"></p>
 										<a title="Clique para baixar ficha técnica."
 											th:href="@{/downloadfile/{idativ}(idativ=${a.idativo})}">
@@ -210,11 +213,11 @@
 								</div>
 								<div class="card-stacked">
 									<div class="card-content">
-										<h6 class="left-align" th:text="${a.nome}"></h6>
+										<h6 class="left-align" th:text="${#strings.replace(a.nome, '*', '')}"></h6>
 
 									</div>
 									<div class="card-action">
-										<p th:text="${a.indicacao}"
+										<p th:text="${#strings.replace(a.indicacao, '•', '')}"
 											style="font-size: 16px; color: #000000;"></p>
 										<a title="Clique para baixar ficha técnica."
 											th:href="@{/downloadfile/{idativ}(idativ=${a.idativo})}">
@@ -236,11 +239,11 @@
 								</div>
 								<div class="card-stacked">
 									<div class="card-content">
-										<h6 class="left-align" th:text="${a.nome}"></h6>
+										<h6 class="left-align" th:text="${#strings.replace(a.nome, '*', '')}"></h6>
 
 									</div>
 									<div class="card-action">
-										<p th:text="${a.indicacao}"
+										<p th:text="${#strings.replace(a.indicacao, '•', '')}"
 											style="font-size: 16px; color: #000000;"></p>
 										<a title="Clique para baixar ficha técnica."
 											th:href="@{/downloadfile/{idativ}(idativ=${a.idativo})}">
@@ -262,11 +265,11 @@
 								</div>
 								<div class="card-stacked">
 									<div class="card-content">
-										<h6 class="left-align" th:text="${a.nome}"></h6>
+										<h6 class="left-align" th:text="${#strings.replace(a.nome, '*', '')}"></h6>
 
 									</div>
 									<div class="card-action">
-										<p th:text="${a.indicacao}"
+										<p th:text="${#strings.replace(a.indicacao, '•', '')}"
 											style="font-size: 16px; color: #000000;"></p>
 										<a title="Clique para baixar ficha técnica."
 											th:href="@{/downloadfile/{idativ}(idativ=${a.idativo})}">
