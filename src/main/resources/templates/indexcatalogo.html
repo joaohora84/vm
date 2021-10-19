@@ -179,105 +179,191 @@
 					style="font-size: 18px;">Novos Ativos</div>
 				<div class="section">
 					<div class="row">
-						<div class="col s12 m3">
+						<div class="col s12 m6">
 
 							<div class="card" th:each="a : ${ativos[0]}">
 								<div class="card-image">
 									<img src="">
 								</div>
 								<div class="card-stacked">
-									<div class="card-content">
+									<div class="card-content" style="background: #AED6F1">
 										<h6 class="left-align" th:text="${#strings.replace(a.nome, '*', '')}"></h6>
 
 									</div>
-									<div class="card-action">
-										<p th:text="${#strings.replace(a.indicacao, '•', '')}"
+									<div class="card-action" >
+										<div style="height: 150px; overflow-y: scroll; padding: 10px">
+											<p th:text="${#strings.replace(a.indicacao, '•', '')}"
 											style="font-size: 16px; color: #000000;"></p>
-										<a title="Clique para baixar ficha técnica."
+										</div>	
+										<div style="padding: 10px">
+											<a title="Clique para baixar ficha técnica."
 											th:href="@{/downloadfile/{idativ}(idativ=${a.idativo})}">
 											<i class="material-icons red-text right">picture_as_pdf</i>
 										</a> <a href="" class="right" title="Buscar ativo"
 											th:href="@{/buscarativoporid/{idativ}(idativ=${a.idativo})}">
 											<i class="material-icons blue-text righ">open_in_new</i>
 										</a>
+										</div>
+										
 									</div>
 								</div>
 							</div>
 						</div>
 
-						<div class="col s12 m3">
+						<div class="col s12 m6">
 
 							<div class="card" th:each="a : ${ativos[1]}">
 								<div class="card-image">
 									<img src="">
 								</div>
 								<div class="card-stacked">
-									<div class="card-content">
+									<div class="card-content" style="background: #AED6F1">
 										<h6 class="left-align" th:text="${#strings.replace(a.nome, '*', '')}"></h6>
 
 									</div>
-									<div class="card-action">
-										<p th:text="${#strings.replace(a.indicacao, '•', '')}"
+									<div class="card-action" >
+										<div style="height: 150px; overflow-y: scroll; padding: 10px">
+											<p th:text="${#strings.replace(a.indicacao, '•', '')}"
 											style="font-size: 16px; color: #000000;"></p>
-										<a title="Clique para baixar ficha técnica."
+										</div>	
+										<div style="padding: 10px">
+											<a title="Clique para baixar ficha técnica."
 											th:href="@{/downloadfile/{idativ}(idativ=${a.idativo})}">
 											<i class="material-icons red-text right">picture_as_pdf</i>
 										</a> <a href="" class="right" title="Buscar ativo"
 											th:href="@{/buscarativoporid/{idativ}(idativ=${a.idativo})}">
 											<i class="material-icons blue-text righ">open_in_new</i>
 										</a>
+										</div>
+										
 									</div>
 								</div>
 							</div>
 						</div>
 
-						<div class="col s12 m3">
+					</div>
+					<div class="row">
+						<div class="col s12 m6">
 
 							<div class="card" th:each="a : ${ativos[2]}">
 								<div class="card-image">
 									<img src="">
 								</div>
 								<div class="card-stacked">
-									<div class="card-content">
+									<div class="card-content" style="background: #AED6F1">
 										<h6 class="left-align" th:text="${#strings.replace(a.nome, '*', '')}"></h6>
 
 									</div>
-									<div class="card-action">
-										<p th:text="${#strings.replace(a.indicacao, '•', '')}"
+									<div class="card-action" >
+										<div style="height: 150px; overflow-y: scroll; padding: 10px">
+											<p th:text="${#strings.replace(a.indicacao, '•', '')}"
 											style="font-size: 16px; color: #000000;"></p>
-										<a title="Clique para baixar ficha técnica."
+										</div>	
+										<div style="padding: 10px">
+											<a title="Clique para baixar ficha técnica."
 											th:href="@{/downloadfile/{idativ}(idativ=${a.idativo})}">
 											<i class="material-icons red-text right">picture_as_pdf</i>
 										</a> <a href="" class="right" title="Buscar ativo"
 											th:href="@{/buscarativoporid/{idativ}(idativ=${a.idativo})}">
 											<i class="material-icons blue-text righ">open_in_new</i>
 										</a>
+										</div>
+										
 									</div>
 								</div>
 							</div>
 						</div>
 
-						<div class="col s12 m3">
+						<div class="col s12 m6">
 
 							<div class="card" th:each="a : ${ativos[3]}">
 								<div class="card-image">
 									<img src="">
 								</div>
 								<div class="card-stacked">
-									<div class="card-content">
+									<div class="card-content" style="background: #AED6F1">
 										<h6 class="left-align" th:text="${#strings.replace(a.nome, '*', '')}"></h6>
 
 									</div>
-									<div class="card-action">
-										<p th:text="${#strings.replace(a.indicacao, '•', '')}"
+									<div class="card-action" >
+										<div style="height: 150px; overflow-y: scroll; padding: 10px">
+											<p th:text="${#strings.replace(a.indicacao, '•', '')}"
 											style="font-size: 16px; color: #000000;"></p>
-										<a title="Clique para baixar ficha técnica."
+										</div>	
+										<div style="padding: 10px">
+											<a title="Clique para baixar ficha técnica."
 											th:href="@{/downloadfile/{idativ}(idativ=${a.idativo})}">
 											<i class="material-icons red-text right">picture_as_pdf</i>
 										</a> <a href="" class="right" title="Buscar ativo"
 											th:href="@{/buscarativoporid/{idativ}(idativ=${a.idativo})}">
 											<i class="material-icons blue-text righ">open_in_new</i>
 										</a>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="row">
+						<div class="col s12 m6">
+
+							<div class="card" th:each="a : ${ativos[4]}">
+								<div class="card-image">
+									<img src="">
+								</div>
+								<div class="card-stacked">
+									<div class="card-content" style="background: #AED6F1">
+										<h6 class="left-align" th:text="${#strings.replace(a.nome, '*', '')}"></h6>
+
+									</div>
+									<div class="card-action" >
+										<div style="height: 150px; overflow-y: scroll; padding: 10px">
+											<p th:text="${#strings.replace(a.indicacao, '•', '')}"
+											style="font-size: 16px; color: #000000;"></p>
+										</div>	
+										<div style="padding: 10px">
+											<a title="Clique para baixar ficha técnica."
+											th:href="@{/downloadfile/{idativ}(idativ=${a.idativo})}">
+											<i class="material-icons red-text right">picture_as_pdf</i>
+										</a> <a href="" class="right" title="Buscar ativo"
+											th:href="@{/buscarativoporid/{idativ}(idativ=${a.idativo})}">
+											<i class="material-icons blue-text righ">open_in_new</i>
+										</a>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="col s12 m6">
+
+							<div class="card" th:each="a : ${ativos[5]}">
+								<div class="card-image">
+									<img src="">
+								</div>
+								<div class="card-stacked">
+									<div class="card-content" style="background: #AED6F1">
+										<h6 class="left-align" th:text="${#strings.replace(a.nome, '*', '')}"></h6>
+
+									</div>
+									<div class="card-action" >
+										<div style="height: 150px; overflow-y: scroll; padding: 10px">
+											<p th:text="${#strings.replace(a.indicacao, '•', '')}"
+											style="font-size: 16px; color: #000000;"></p>
+										</div>	
+										<div style="padding: 10px">
+											<a title="Clique para baixar ficha técnica."
+											th:href="@{/downloadfile/{idativ}(idativ=${a.idativo})}">
+											<i class="material-icons red-text right">picture_as_pdf</i>
+										</a> <a href="" class="right" title="Buscar ativo"
+											th:href="@{/buscarativoporid/{idativ}(idativ=${a.idativo})}">
+											<i class="material-icons blue-text righ">open_in_new</i>
+										</a>
+										</div>
+										
 									</div>
 								</div>
 							</div>

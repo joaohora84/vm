@@ -25,7 +25,7 @@ public interface AtivoRepository extends JpaRepository<Ativo, Long> {
 	@Query("select a from Ativo a where idativo = ?1")
 	Page<Ativo> getAtivoById(Long id, Pageable pageable);
 
-	@Query(value = "select * from Ativo order by idativo desc limit 5", nativeQuery = true)
+	@Query(value = "select * from Ativo order by idativo desc limit 6", nativeQuery = true)
 	List<Ativo> getAtivoNovo();
 
 	@Query(value = "select * from ativo as a\n"
