@@ -37,7 +37,7 @@
 						style="padding: 20px 20px 20px 20px">
 
 						<form th:action="pesquisarprescritor" method="post">
-										<h6 class="bold">Pesquisar</h6>
+										<h6 class="bold">Filtrar</h6>
 										<div class="row">
 											<div class="input-field col s12 m4">
 												<input id="nome" type="text" name="nome" class="validate">
@@ -80,21 +80,21 @@
 											</div>
 
 											<div class="input-field col s12 m4">
-												<button class="btn waves-effect waves-light waves-light" type="submit"
+												<button class="waves-effect waves-light waves-light blue darken-1 btn-floating" type="submit" title="Buscar"
 													name="action" id="buscar">
-													Buscar <i class="material-icons right">search</i>
+													<i class="material-icons right">search</i>
 
 												</button>
 											
-												<button class="btn waves-effect waves-light waves-light red"
-													type="reset" name="action" id="limpar">
-													Limpar <i class="material-icons right">clear</i>
+												<button class="btn-floating waves-effect waves-light waves-light red"
+													type="reset" name="action" id="limpar" title="Limpar">
+													<i class="material-icons right">clear</i>
 												</button>
 											
 											
-												<a class="btn waves-effect waves-light blue" type="button"
-													href="/cadastroprescritor"> Novo <i
-													class="material-icons right">save</i>
+												<a class="btn-floating waves-effect waves-teal" title="Novo" type="button"
+													href="/cadastroprescritor">
+													<i class="material-icons right">add_box</i>
 												</a>
 											</div>
 										</div>

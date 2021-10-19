@@ -31,12 +31,7 @@
 					
 					<div class="card grey lighten-4" style="padding: 20px 20px 20px 20px;">
 					
-						<div class="right">
-							<a  class="tooltipped" data-position="hight" data-tooltip="Cadastrar Ativo"
-						   	 	href="/cadastroativo"><i
-								class="small material-icons green-text">add_box</i></a>
-						</div>
-					
+									
 					
 						<form action="pesquisarativo" method="post">
 							<h6>Filtrar por especialidade e/ou inicial</h6>
@@ -82,11 +77,14 @@
 									</select>
 
 								</div>
-								<div class="input-field">
-									<button class="btn waves-effect waves-light col s12 m4" type="submit" name="action">
-										Buscar <i class="material-icons right">search</i>
+								<div class="input-field col s12 m4">
+									<button class="btn-floating waves-effect waves-light waves-light blue darken-1" title="Buscar" type="submit" name="action">
+										<i class="material-icons right">search</i>
 
 									</button>
+									<a  class="btn-floating waves-effect waves-light" title="Novo" href="/cadastroativo">
+										<i class="material-icons">add_box</i>
+									</a>
 								</div>
 
 							</div>

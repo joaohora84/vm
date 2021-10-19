@@ -37,16 +37,10 @@
 					<div class="card grey lighten-4"
 						style="padding: 20px 20px 20px 20px;">
 
-						<div class="right">
-							<a class="tooltipped" data-position="hight"
-								data-tooltip="Cadastrar Prescrição" href="/cadastroprescricao"><i
-								class="small material-icons green-text">add_box</i></a>
-						</div>
-
-
+						
 						<form action="pesquisarprescricao" method="post">
 							<div class="row">
-								<div class="input-field col s4">
+								<div class="input-field col s12 m4">
 									<select id="prescritor" name="prescritor">
 										<option value="">Todos</option>
 										<option th:each="pr : ${prescritores}"
@@ -54,12 +48,15 @@
 									</select>
 								</div>
 
-								<div class="input-field col s4">
-									<button class="btn waves-effect waves-light" type="submit"
+								<div class="input-field col s12 m4">
+									<button class="btn-floating waves-effect waves-light blue darken-1" title="Buscar" type="submit"
 										name="action">
-										Buscar <i class="material-icons right">search</i>
+										<i class="material-icons right">search</i>
 
 									</button>
+									<a class="btn-floating waves-effect waves-light"
+										data-tooltip="Cadastrar Prescrição" title="Novo" href="/cadastroprescricao"><i
+										class="material-icons">add_box</i></a>
 								</div>
 
 							</div>
