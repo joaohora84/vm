@@ -360,7 +360,7 @@ public class VisitaController {
 	@GetMapping("/visitapage")
 	public ModelAndView carregaVisitaPorPaginacao(@PageableDefault(size = QTD_PAGINAS) Pageable pageable, ModelAndView model) {
 
-		Page<Visita> pageVisita = visitaRepository.findAll(PageRequest.of(pageable.getPageNumber(), 5));
+		Page<Visita> pageVisita = visitaRepository.findAll(PageRequest.of(pageable.getPageNumber(), QTD_PAGINAS));
 		model.addObject("visitas", pageVisita);
 		model.setViewName("/listavisita");
 		model.addObject("prescritores", prescritorRepository.findAll());
