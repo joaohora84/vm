@@ -9,6 +9,16 @@ public class Event {
 	private String hour;
 
 	private String end;
+	
+	private String url;
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 	public void setTitle(String title) {
 		this.title = title;

@@ -216,15 +216,30 @@
 								</select>
 								<label>Especialidade</label>
 								<a href="#modal1" class="modal-trigger" ><i class="material-icons teal-text" title="Cadastrar especialidade médica">add</i></a>
-								
-								
-
+			
 							</div>
-							
 						</div>
-						
-						
-						</form>
+
+						<div class="row col s12 m6">
+
+							<ul class="collection with-header">
+								<li class="collection-header">
+									<h5 th:text="Secretárias"></h5>
+								</li>
+								<li class="collection-item" th:each="s : ${secretarias}">
+									<div>
+										<span class="title" th:text="${s.nome}"></span>
+										<a th:href="@{/editarsecretaria/{idsec}(idsec=${s.idsecretaria})}" target="_blank" class="secondary-content">
+										<i class="material-icons" title="Editar secretária">send</i>
+										</a>
+									</div>
+								</li>
+								
+							</ul>
+
+						</div>
+
+					</form>
 						</div>
 			
 			</div>
@@ -445,7 +460,9 @@
                         $("#ibge").val("...");
 
                         //Consulta o webservice viacep.com.br/
-                        $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+                       // $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+                    	   
+                    	   $.getJSON("https://apps.widenet.com.br/busca-cep/api/cep.json?code="+cep, function(dados) {
 
                             if (!("erro" in dados)) {
                                 //Atualiza os campos com os valores da consulta.

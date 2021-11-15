@@ -39,22 +39,26 @@ try {
 	if (!visitas.isEmpty()) {
 
 		for (Visita v : visitas) {
-
+			
+			
 			String title = "\n" + "Prescritor: " + v.getPrescritor().getNome() + "\n" + "Visitador: " + v.getVisitador().getNome();
 
 			Date data = v.getData_agendamento();
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			String dataFormatada = dateFormat.format(data);
+			
 
 			String horario = v.getHorario();
 			
 			String horario_fim = v.getHorario_fim();
+			String url = "/editarvisita/" + v.getIdvisita();
 
 			Event event = new Event();
 
 			event.setTitle(title);
 			event.setStart(dataFormatada + "T" + horario);
 			event.setEnd(dataFormatada + "T" + horario_fim);
+			event.setUrl(url);
 
 			events.add(event);
 

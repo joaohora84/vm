@@ -1,6 +1,7 @@
 package com.vm.controller;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.vm.model.Ativo;
 import com.vm.model.PerfilPrescritor;
 import com.vm.model.Prescritor;
+import com.vm.model.Secretaria;
 import com.vm.repository.ClinicaRepository;
 import com.vm.repository.EspecialidadePrescritorRepository;
 import com.vm.repository.PerfilPrescritorRepository;
@@ -45,6 +46,7 @@ public class PrescritorController {
 	@Autowired
 	private ClinicaRepository clinicaRepository;
 
+	@Autowired
 	private SecretariaRepository secretariaRepository;
 
 	@Autowired
@@ -66,7 +68,8 @@ public class PrescritorController {
 
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value = "**/salvarprescritor")
+	//@RequestMapping(method = RequestMethod.POST, value = "**/salvarprescritor")
+	@GetMapping("**/salvarprescritor")
 	public ModelAndView salvar(Prescritor prescritor, PerfilPrescritor pp) {
 
 		// prescritor.setSecretaria(secretariaRepository.getSecretariaPrescritor(prescritor.getIdprescritor()));
@@ -133,9 +136,12 @@ public class PrescritorController {
 		ModelAndView model = new ModelAndView("/cadastroprescritor");
 
 		Optional<Prescritor> prescritor = prescritorRepository.findById(idpres);
-
+		
+		List<Secretaria> secretarias = secretariaRepository.getSecretariaPrescritor(idpres);
+		
 		model.addObject("especialidades", especialidadePrescritorRepository.findAllByOrderBy());
 		model.addObject("clinicas", clinicaRepository.findAll(Sort.by("nome")));
+		model.addObject("secretarias", secretarias);
 		model.addObject("prescritorobj", prescritor.get());
 
 		return model;
@@ -224,17 +230,16 @@ public class PrescritorController {
 			@RequestParam("conselho") String conselho, @RequestParam("numeroConselho") String numeroConselho,
 			@RequestParam("especialidade") Long especialidade, @RequestParam("clinica") Long clinica,
 			@PageableDefault(size = QUANTIDADE_ITENS_PAGINA) Pageable pageable, ModelAndView model) {
-		
-		if (nome != "" || !nome.equals(null) 
-				|| conselho.equals("") || conselho.equals(null)
-				|| numeroConselho.equals("") || numeroConselho.equals(null)
-				|| !especialidade.equals("") || !especialidade.equals(null)
-				|| !clinica.equals("") || !clinica.equals(null)) {
-			
-			carregaAtivoPorPaginacaoPage(nome, conselho, numeroConselho, especialidade, clinica, pageable.getPageNumber(), pageable, model);
-			
+
+		if (nome != "" || !nome.equals(null) || conselho.equals("") || conselho.equals(null)
+				|| numeroConselho.equals("") || numeroConselho.equals(null) || !especialidade.equals("")
+				|| !especialidade.equals(null) || !clinica.equals("") || !clinica.equals(null)) {
+
+			carregaAtivoPorPaginacaoPage(nome, conselho, numeroConselho, especialidade, clinica,
+					pageable.getPageNumber(), pageable, model);
+
 		} else {
-			
+
 			Page<Prescritor> pagePrescritor = prescritorRepository
 					.findAll(PageRequest.of(pageable.getPageNumber(), QUANTIDADE_ITENS_PAGINA, Sort.by("nome")));
 			model.addObject("prescritores", pagePrescritor);
@@ -249,7 +254,7 @@ public class PrescritorController {
 			model.setViewName("/listaprescritor");
 
 			return model;
-			
+
 		}
 
 		return model;
